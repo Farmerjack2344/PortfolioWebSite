@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet"  type="text/css" href="{% static 'css/blogstyle.css' %}">
+{% endblock%}
+
+{% block body_block %}
+    <div class="container login-container" >
+        <div class="jumbotron shadow">
+
+                    <h2 class="display-6">Login</h2>
+
+                    {% if messages %}
+                            <ul style="list-style-type: none; color: red" >
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    <p>(Must be a super user to login)</p>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <div class="login-field">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" id="username" required>
+                      </div>
+
+                      <div class="login-field">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="password" required>
+                      </div>
+
+
+                      <button type="submit" class='btn btn-default ' >Login</button>
+
+                    </form>
+                    <h5>If you dont have and account you can <a href="{% url 'overview:home' %}">register here</a></h5>
+        </div>
+    </div>
+{% endblock %}
