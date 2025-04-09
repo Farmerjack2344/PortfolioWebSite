@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+
+
+{% block body_block %}
+
+
+    <div class="container" style="margin-top:20px; paddng:24px;">
+        <h1 class="display-4">The Magic 8-ball</h1>
+
+        <h2 class="display-5">Overview</h2>
+        <p>
+            The aim of this project was to interact with an LCD screen through my Arduino Uno board using the Python Language.
+            The motivation behind this project was that I wanted to bridge the Gap between my lack of practical mechanical engineering
+            skills with practical coding technical experience. This project was especally helpful because it required me to
+            look at the datasheet of the LCD screen that  had to map the Bniary codes to the signals that  would be sending to the
+            LCD Screen. I also needed to fnd out whch pin did what.
+
+            Ultimatley because the datasheet was in chinese I could quite understand what signals I would have to send
+            to get characters that I wanted.
+
+            To overcome this issue I created and exhaustive function that went through every binary code and sent it to
+            the LCD Screen. Then when it came up I would type in the character that I saw. The function would then record
+            these values to a text file that I would further turn nto a Python dictionary later
+
+        </p>
+        <div>
+            <img width="600" src="{% static 'Overview/images/Magic8ball1.jpg' %}">
+            <img width="600" src="{% static 'Overview/images/Magic8ball2.jpg' %}">
+        </div>
+
+
+        <h2 class="display-5">Technical</h2>
+        <p>
+            In terms of the technical things that I learnt.
+            First I learnt that what I was acttually doing was embedded systtems programming. I had to send data to the
+            LCD screen telling it whether that signal I was sending it were <em>Data</em> or <em>Instructions</em>.
+
+            Whenever I sentt data to the LCD screen I had to send a bit to the Data/instructioin register to tell it how
+            to interpret the data had sent to it. Finding out what bytes meant what instructioins was made easier by the data
+            sheet but the data I had to fnd on my own.
+
+            Futhermore the LCD screen could take data in a 4 bit form where I send data 4bits at a time or an 8 bit form
+            where I could just send whole bytes at a time.
+
+            Some of the code that I made can be found on my GitHub
+        </p>
+
+    </div>
+
+{% endblock %}
