@@ -14,6 +14,9 @@ class WebView(TemplateView):
 class ArduinoView(TemplateView):
     template_name = 'Overview/arduino.html'
 
+class PFUView(TemplateView):
+    template_name = 'Overview/PowerFromUndergroundhtml'
+
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'
 

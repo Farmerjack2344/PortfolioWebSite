@@ -14,6 +14,7 @@ urlpatterns = [
     path('ProjectPenetrationTester/', views.PenTView.as_view(), name='pent'),
     path('ProjectWebsite/', views.WebView.as_view(), name='web'),
     path('ProjectArduino/', views.ArduinoView.as_view(), name='arduino'),
+    path('PowerFromUnderground/', views.PFUView.as_view(), name='pfu'),
     path('Examples', views.HTMLView.as_view(), name='examples'),
 
 ]
