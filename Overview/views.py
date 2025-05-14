@@ -3,7 +3,7 @@ from typing import final
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from Overview.forms import FlashInputForm
-from SimpleFlashCycleCopy import FlashCycle
+from Overview.SimpleFlashCycle import FlashCycle
 from CoolProp.CoolProp import PropsSI
 import json
 
@@ -39,7 +39,7 @@ def plot_flash(request):
     else:
         form = FlashInputForm()
 
-    return render(request, 'Overview/flash.html', {'form': form,'Entropies': json.dumps(state_entropies),'Temperatures': json.dumps(state_temperatures),
+    return render(request, 'Overview/flash_cycle_plot.html', {'form': form,'Entropies': json.dumps(state_entropies),'Temperatures': json.dumps(state_temperatures),
     })
 
 class ACCTView(TemplateView):

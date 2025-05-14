@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+
+
+{% block body_block %}
+    <h2>Flash Cycle Inputs</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}<!-- The form here comes from the overview view for the flash plot. DOnt be confused-->
+        <button type="submit">Run Simulation</button>
+    </form>
+
+    {% if entropy and temperature %}
+        <h3>Temperature vs. Entropy (T–s)</h3>
+        <canvas id="tsChart" width="600" height="400"></canvas>
+        <script>
+            const ctx = document.getElementById('tsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ entropy|safe }},
+                    datasets: [{
+                        label: 'T–s Curve',
+                        data: {{ temperature|safe }},
+                        borderColor: 'blue',
+                        fill: false,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Entropy (kJ/kg·K)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Temperature (K)'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    {% endif %}
+
+{% endblock %}
