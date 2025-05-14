@@ -24,6 +24,7 @@ class PFUView(TemplateView):
     template_name = 'Overview/PowerFromUnderground.html'
 
 def plot_flash(request):
+    #FlashCycle(419, 250, 48.5671, 3972.06e3, (650e3 / 3972.06e3))
     form = FlashInputForm()
     state_temperatures = []# This will hold the temperature from the flash cycle
     state_entropies = []# This will hold the entropies from the flash cycle
@@ -35,7 +36,14 @@ def plot_flash(request):
             T2 = form.cleaned_data['final_temp']
             P1 = form.cleaned_data['init_pressure']
             dP = form.cleaned_data['pressure_change']
-            Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change = FlashCycle(m_dot, init_temp = T1, final_temp = T2, init_pressure = P1, pressure_change = dP, PropsSI=PropsSI)
+            try:
+                Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change = FlashCycle(m_dot, init_temp = T1, final_temp = T2, init_pressure = P1, pressure_change = dP, PropsSI=PropsSI)
+
+            except Exception as error:
+                form.add_error(None, error)
+                print(error)
+
+
     else:
         form = FlashInputForm()
 
