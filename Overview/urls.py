@@ -15,6 +15,7 @@ urlpatterns = [
     path('ProjectWebsite/', views.WebView.as_view(), name='web'),
     path('ProjectArduino/', views.ArduinoView.as_view(), name='arduino'),
     path('PowerFromUnderground/', views.PFUView.as_view(), name='pfu'),
+    path('CV/', views.CVView.as_view(), name='CV'),
     path('Examples', views.HTMLView.as_view(), name='examples'),
 
 ]

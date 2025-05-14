@@ -26,6 +26,9 @@ class EducationView(TemplateView):
 class CareerView(TemplateView):
     template_name = 'Overview/Career.html'
 
+class CVView(TemplateView):
+    template_name = 'Overview/CV.html'
+
 class HTMLView(TemplateView):
     template_name = 'Overview/bootstrapexamples.html'
 
