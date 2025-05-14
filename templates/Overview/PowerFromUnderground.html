@@ -68,34 +68,37 @@
             <h2 class="text-3xl font-semibold text-blue-800">Results and Discussion</h2>
 
             <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
-            <div>
-                <img src="{% static 'Overview/images/FlashCycleConfiguration.png' %}">
-                <caption>Schematic for the flash Cycle used</caption>
-            </div>
+            <figure>
+                <img src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
+                <figcaptioncaption>Schematic for the flash Cycle used</figcaptioncaption>
+            </figure>
             <p>
               Produced a peak of ~350 kW at a pressure drop of 32%. However, it required high geofluid
               temperatures and flow rates, making it unsuitable for Cornwall's relatively moderate conditions.
             </p>
 
             <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
-              <div>
-                <img src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}">
-                <caption>Schematic for the Binary Cycle used</caption>
-              </div>
+              <figure>
+                <img src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
+                <figcaption>Schematic for the Binary Cycle used</figcaption>
+              </figure>
             <p>
               Reached 1.8–2 MW using R218, with the best performance at low injection well temperatures and
               high turbine inlet pressures. n-pentane and cyclopentane provided even better efficiency.
             </p>
 
-            <!-- IMAGE: "BinaryCycleResults.png" -->
+            <figure>
+                <img src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
+                <figcaption>Bar chart of work output vs working fluid</figcaption>
+            </figure>
             <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
 
             <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
 
 
               <figure>
-                  <img src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="500" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                  <figcaption class="text-center text-sm text-gray-600 mt-2">
+                  <img src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <figcaption class="text-sm text-gray-600 mt-2">
                     Schematic for the Hybrid Cycle used
                   </figcaption>
               </figure>
@@ -105,7 +108,18 @@
               heat recovery.
             </p>
 
-            <!-- IMAGE: "HybridCycleTSDiagram.png" -->
+            <figure>
+                  <img src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <figcaption class="text-sm text-gray-600 mt-2">
+                    Results of the simulation
+                  </figcaption>
+              </figure>
+            <figure>
+                  <img src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <figcaption class="text-sm text-gray-600 mt-2">
+                    Results of the simulation Parametric study
+                  </figcaption>
+              </figure>
             <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
 
             <p class="mt-4 font-semibold">Key Insight:</p>
