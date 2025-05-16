@@ -6,6 +6,7 @@ from Overview.forms import FlashInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from CoolProp.CoolProp import PropsSI
 from Overview.PowerFromUnderground.linspace import linspace
+from .models import Project
 import json
 
 # Create your views here.
@@ -23,6 +24,10 @@ class ArduinoView(TemplateView):
 
 class PFUView(TemplateView):
     template_name = 'Overview/PowerFromUnderground.html'
+
+def portfolio(request):
+    projects = Project.objects.all()
+    return render(request, 'Overview/portfolio.html', {'projects': projects})
 
 def plot_flash(request):
     #FlashCycle(419, 250, 48.5671, 3972.06e3, (650e3 / 3972.06e3))
@@ -47,7 +52,7 @@ def plot_flash(request):
 
             except Exception as error:
                 form.add_error(None, error)
-                print(error)
+
 
 
     else:

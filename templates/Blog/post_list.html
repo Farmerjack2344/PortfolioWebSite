@@ -10,7 +10,7 @@
     <div class="centerstage">
         {% for post in post_list %}
 
-                <div class="container post" style="margin-top: 20px;">
+                <div class="container post" style="margin-top: 20px; border-radius: 10px">
                     <h1 class="posttitle display-4"><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title}}</a></h1>
                     <div class="postdate">
                         <p>Published on: {{post.published_date|date:"d b Y"}}</p>
