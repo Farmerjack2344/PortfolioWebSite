@@ -1,5 +1,7 @@
-from CoolProp.CoolProp import PropsSI
-def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,PropsSI):
+from zipfile import error
+
+
+def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,PropsSI, linspace):
 
     #1 - 2 Flashing
     
@@ -50,7 +52,7 @@ def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,Prop
     mq_dot = x2 * m_dot
     isentropic_efficiency = 0.85
     
-    T5 = final_temp + 273.15 #50 + 273.15
+    T5 = final_temp +  273.15
     S5s = S4
     
     H5s = PropsSI('H', 'S', S5s, 'T', T5, 'WATER')
@@ -68,7 +70,7 @@ def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,Prop
     x5 = (H5 - Hl5) / (Hg5 - Hl5)
     
     #5 - 6 Condensation
-    T5 = 50 + 273.15
+    T5 = final_temp + 273.15
     S5s = S4
     H6 = Hl5
     T6 = T5
@@ -90,5 +92,20 @@ def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,Prop
     state_temperatures = [T1, T2, T4, T5, T6, T6]
     
     efficiency = abs(abs(Work_out - Work_in) / (mq2_dot * (Hg4 - H1)))
+
+    T_min=  PropsSI('Tmin','WATER')
+    T_max=  PropsSI('Tmax','WATER')
+    temperature_range = linspace(T_min, T_max, 300)
+
+    S_liq = []
+    S_vap = []
+
+    for i in temperature_range:
+        try:
+            S_liq.append(PropsSI('S','T',i,'Q',0,'WATER'))
+            S_vap.append(PropsSI('S','T',i,'Q',1,'WATER'))
+        except Exception as error:
+            print(error)
+
     
-    return Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change
+    return Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change, S_liq, S_vap, temperature_range

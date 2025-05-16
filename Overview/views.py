@@ -1,10 +1,11 @@
-from typing import final
-
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from sympy.physics.units import temperature
+
 from Overview.forms import FlashInputForm
-from Overview.SimpleFlashCycle import FlashCycle
+from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from CoolProp.CoolProp import PropsSI
+from Overview.PowerFromUnderground.linspace import linspace
 import json
 
 # Create your views here.
@@ -28,6 +29,9 @@ def plot_flash(request):
     form = FlashInputForm()
     state_temperatures = []# This will hold the temperature from the flash cycle
     state_entropies = []# This will hold the entropies from the flash cycle
+    S_liq = []
+    S_vap = []
+    temperature_range = []
     if request.method == 'POST':
         form  = FlashInputForm(request.POST)
         if form.is_valid():
@@ -37,7 +41,9 @@ def plot_flash(request):
             P1 = form.cleaned_data['init_pressure']
             dP = form.cleaned_data['pressure_change']
             try:
-                Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change = FlashCycle(m_dot, init_temp = T1, final_temp = T2, init_pressure = P1, pressure_change = dP, PropsSI=PropsSI)
+
+                Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change, S_liq, S_vap, temperature_range\
+                    = FlashCycle(m_dot, init_temp = T1, final_temp = T2, init_pressure = P1, pressure_change = dP, PropsSI=PropsSI, linspace = linspace)
 
             except Exception as error:
                 form.add_error(None, error)
@@ -47,8 +53,7 @@ def plot_flash(request):
     else:
         form = FlashInputForm()
 
-    return render(request, 'Overview/flash_cycle_plot.html', {'form': form,'Entropies': json.dumps(state_entropies),'Temperatures': json.dumps(state_temperatures),
-    })
+    return render(request, 'Overview/flash_cycle_plot.html', {'form': form,'Entropies': json.dumps(state_entropies),'Temperatures': json.dumps(state_temperatures), 'Sliq': json.dumps(S_liq), 'Svap': json.dumps(S_vap), 'range': json.dumps(temperature_range)})
 
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'

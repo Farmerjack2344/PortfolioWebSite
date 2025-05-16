@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
+
 {% extends "base.html"%}
 {% load static %}
 
@@ -17,43 +17,58 @@
 
 
 
-            {% if Entropies and Temperatures %}
+
             <h3>Temperature vs. Entropy (T–s)</h3>
-            <canvas id="tsChart" width="600" height="400"></canvas>
-            <script>
+            <div id="tsPlot" style="width:600px; height:600px;"></div>
 
-                const ctx = document.getElementById('tsChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: {{ Entropies|safe }},
-                        datasets: [{label: 'T–s Curve',
-                                    data: {{ Temperatures|safe }},
-                                    borderColor: 'blue',
-                                    fill: false,
-                                    tension: 0.3
-                                  }]
-                          },
-                    options: {
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Entropy (kJ/kg·K)'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Temperature (K)'
-                                }
-                            }
-                        }
+                <!-- Plotly CDN -->
+
+
+                <script>
+                  const Temperatures = {{ Temperatures|safe }};
+                  const Entropies = {{ Entropies|safe }};
+                  const Sliq = {{ Sliq | safe }}
+                  const Svap = {{ Svap | safe }}
+                  const range = {{ range | safe }}
+                  const labels = ['1', '2', '4', '5', '5s', '6'];
+
+                  const tsData = [
+                    {
+                      x: Entropies,
+                      y: Temperatures,
+                      mode: 'lines+markers+text',
+                      name: 'Cycle',
+                      marker: { color: 'green' },
+                      text: labels,
+                      textposition: 'bottom right'
+                    },
+                    {
+                      x: Sliq,
+                      y: range,
+                      mode: 'lines',
+                      name: 'Saturated Liquid',
+                      line: { color: 'blue', dash: 'dot' }
+                    },
+                    {
+                      x: Svap,
+                      y:  range,
+                      mode: 'lines',
+                      name: 'Saturated Vapor',
+                      line: { color: 'red', dash: 'dot' }
                     }
-                });
+                  ];
 
-            </script>
-            {% endif %}
+                  Plotly.newPlot('tsPlot', tsData, {
+                    title: 'T–s Diagram of Flash Cycle (Best Case)',
+                    xaxis: { title: 'Entropy (kJ/kg·K)' },
+                    yaxis: { title: 'Temperature (K)' },
+                    legend: { x: 1, y: 1 }
+                  })
+
+                </script>
+
+            </div>
+
 
         </div>
     </div>
