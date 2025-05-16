@@ -1,6 +1,5 @@
-from zipfile import error
-
-
+from CoolProp.CoolProp import PropsSI
+from Overview.PowerFromUnderground.linspace import linspace
 def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,PropsSI, linspace):
 
     #1 - 2 Flashing
@@ -105,7 +104,17 @@ def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,Prop
             S_liq.append(PropsSI('S','T',i,'Q',0,'WATER'))
             S_vap.append(PropsSI('S','T',i,'Q',1,'WATER'))
         except Exception as error:
-            print(error)
+            pass
 
-    
-    return Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change, S_liq, S_vap, temperature_range
+    output = {
+        'Work_out': Work_out,
+        'heat_out': heat_out,
+        'state_entropies': state_entropies,
+        'state_temperatures': state_temperatures,
+        'S_liq':S_liq,
+        'S_vap':S_vap,
+        'temperature_range':temperature_range}
+
+    return output
+
+

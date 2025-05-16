@@ -30,35 +30,57 @@ def portfolio(request):
     return render(request, 'Overview/portfolio.html', {'projects': projects})
 
 def plot_flash(request):
-    #FlashCycle(419, 250, 48.5671, 3972.06e3, (650e3 / 3972.06e3))
     form = FlashInputForm()
-    state_temperatures = []# This will hold the temperature from the flash cycle
-    state_entropies = []# This will hold the entropies from the flash cycle
-    S_liq = []
-    S_vap = []
-    temperature_range = []
+    para_work_out_array = []
+    percentage_array = []
+    output = {
+        'Work_out': 0,
+        'heat_out': 0,
+        'state_entropies': [],
+        'state_temperatures': [],
+        'S_liq': [],
+        'S_vap': [],
+        'temperature_range':[]}
+
     if request.method == 'POST':
-        form  = FlashInputForm(request.POST)
+        form = FlashInputForm(request.POST)
         if form.is_valid():
             m_dot = form.cleaned_data['mass_flow_rate']
             T1 = form.cleaned_data['init_temp']
             T2 = form.cleaned_data['final_temp']
             P1 = form.cleaned_data['init_pressure']
             dP = form.cleaned_data['pressure_change']
+
             try:
+                # Base run for plotting
+                output = FlashCycle(
+                    m_dot, init_temp=T1, final_temp=T2, init_pressure=P1,
+                    pressure_change=dP, PropsSI=PropsSI, linspace=linspace
+                )
 
-                Work_out, heat_out, state_entropies, state_temperatures, efficiency, pressure_change, S_liq, S_vap, temperature_range\
-                    = FlashCycle(m_dot, init_temp = T1, final_temp = T2, init_pressure = P1, pressure_change = dP, PropsSI=PropsSI, linspace = linspace)
+                # Parametric analysis
+                percentage_array = [x / 1000 for x in range(10, 950, 25)]
 
+                for i in percentage_array:
+                    para_output = FlashCycle(
+                        m_dot, init_temp=T1, final_temp=T2, init_pressure=P1,
+                        pressure_change=i, PropsSI=PropsSI, linspace=linspace
+                    )
+                    para_work_out_array.append(para_output["Work_out"] * -1)
+                    print(para_work_out_array)
             except Exception as error:
                 form.add_error(None, error)
 
-
-
-    else:
-        form = FlashInputForm()
-
-    return render(request, 'Overview/flash_cycle_plot.html', {'form': form,'Entropies': json.dumps(state_entropies),'Temperatures': json.dumps(state_temperatures), 'Sliq': json.dumps(S_liq), 'Svap': json.dumps(S_vap), 'range': json.dumps(temperature_range)})
+    return render(request, 'Overview/flash_cycle_plot.html', {
+        'form': form,
+        'Entropies': json.dumps(output["state_entropies"]),
+        'Temperatures': json.dumps(output["state_temperatures"]),
+        'Sliq': json.dumps(output["S_liq"]),
+        'Svap': json.dumps(output["S_vap"]),
+        'range': json.dumps(output["temperature_range"]),
+        'para_work_out_array': json.dumps(para_work_out_array),
+        'percentage_array': json.dumps(percentage_array)
+    })
 
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'

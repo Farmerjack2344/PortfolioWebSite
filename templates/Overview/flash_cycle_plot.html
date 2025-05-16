@@ -3,7 +3,10 @@
 {% extends "base.html"%}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet"  type="text/css" href="{% static 'Overview/css/PlotStyle.css' %}">
 
+{% endblock %}
 
 {% block body_block %}
     <div class="container">
@@ -18,55 +21,105 @@
 
 
 
-            <h3>Temperature vs. Entropy (T–s)</h3>
-            <div id="tsPlot" class="PFUPlot" style="width:600px; height:600px;"></div>
 
-                <!-- Plotly CDN -->
+            <div class="PFUPlot">
+                <div id="tsPlot" style="width:100%; height: 100%;">
+
+                    <!-- Plotly CDN -->
 
 
-                <script>
-                  const Temperatures = {{ Temperatures|safe }};
-                  const Entropies = {{ Entropies|safe }};
-                  const Sliq = {{ Sliq | safe }}
-                  const Svap = {{ Svap | safe }}
-                  const range = {{ range | safe }}
-                  const labels = ['1', '2', '4', '5', '5s', '6'];
+                    <script>
+                      const Temperatures = {{ Temperatures|safe }};
+                      const Entropies = {{ Entropies|safe }};
+                      const Sliq = {{ Sliq | safe }}
+                      const Svap = {{ Svap | safe }}
+                      const range = {{ range | safe }}
 
-                  const tsData = [
-                    {
-                      x: Entropies,
-                      y: Temperatures,
-                      mode: 'lines+markers+text',
-                      name: 'Cycle',
-                      marker: { color: 'green' },
-                      text: labels,
-                      textposition: 'bottom right'
-                    },
-                    {
-                      x: Sliq,
-                      y: range,
-                      mode: 'lines',
-                      name: 'Saturated Liquid',
-                      line: { color: 'blue', dash: 'dot' }
-                    },
-                    {
-                      x: Svap,
-                      y:  range,
-                      mode: 'lines',
-                      name: 'Saturated Vapor',
-                      line: { color: 'red', dash: 'dot' }
-                    }
-                  ];
+                      const labels = ['1', '2', '4', '5', '5s', '6'];
 
-                  Plotly.newPlot('tsPlot', tsData, {
-                    title: 'T–s Diagram of Flash Cycle (Best Case)',
-                    xaxis: { title: 'Entropy (kJ/kg·K)' },
-                    yaxis: { title: 'Temperature (K)' },
-                    legend: { x: 1, y: 1 }
-                  })
 
-                </script>
 
+
+                      const tsData = [
+                        {
+                          x: Entropies,
+                          y: Temperatures,
+                          mode: 'lines+markers+text',
+                          name: 'Cycle',
+                          marker: { color: 'green' },
+                          text: labels,
+                          textposition: 'bottom right'
+                        },
+                        {
+                          x: Sliq,
+                          y: range,
+                          mode: 'lines',
+                          name: 'Saturated Liquid',
+                          line: { color: 'blue', dash: 'dot' }
+                        },
+                        {
+                          x: Svap,
+                          y:  range,
+                          mode: 'lines',
+                          name: 'Saturated Vapor',
+                          line: { color: 'red', dash: 'dot' }
+                        },
+                      ];
+
+
+
+                        Plotly.newPlot('tsPlot', tsData, {
+                        title: 'T–s Diagram of Flash Cycle',
+                        xaxis: { title: 'Entropy (J/kg·K)' },
+                        yaxis: { title: 'Temperature (K)' },
+                        legend: { x: 1, y: 1 }
+                      },
+                      {
+                      responsive: true,
+                      displayModeBar: true,
+                      useResizeHandler: true
+                      })
+
+
+                    </script>
+
+                </div>
+            </div>
+
+
+            <div class="PFUPlot">
+                <div id="ParaPlot" style="width:100%; height: 100%;">
+                    <script>
+                        const percentage_array = {{ percentage_array | safe }};
+                        const para_work_out_array = {{ para_work_out_array | safe }};
+                        console.log(para_work_out_array)
+
+                        const ParametricData = [
+                            {
+                                x: percentage_array,
+                                y: para_work_out_array,
+                                mode: 'lines+markers',
+                                name: 'Work Output',
+                                marker: { color: 'orange' }
+                            }
+                        ];
+
+                        Plotly.newPlot('ParaPlot', ParametricData, {
+                            title: 'Work Output vs. Pressure Difference',
+                            xaxis: { title: 'Pressure Difference' },
+                            yaxis: { title: 'Work Output (W)' },
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                            responsive: true,
+                            useResizeHandler: true
+                        });
+
+                        window.addEventListener('resize', () => {
+                            Plotly.Plots.resize('ParaPlot');
+                        });
+                    </script>
+                </div>
             </div>
 
 
