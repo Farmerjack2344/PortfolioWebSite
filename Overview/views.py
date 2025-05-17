@@ -4,9 +4,10 @@ from sympy.physics.units import temperature
 
 from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
+from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary
 from CoolProp.CoolProp import PropsSI
 from Overview.PowerFromUnderground.linspace import linspace
-from .PowerFromUnderground.SimpleBinaryCycle import working_fluid
+
 from .models import Project
 import json
 
@@ -85,8 +86,15 @@ def plot_flash(request):
 
 def plot_binary(request):
     form  = BinaryInputForm()
+    output = {
+        'state_enthalpies': [],
+        'state_pressures': [],
+        'state_entropies': [],
+        'state_temperatures' : []
+    }
 
-    if request.method("POST"):
+
+    if request.method == 'POST':
         form = BinaryInputForm(request.POST)
         if form.is_valid():
             working_fluid = form.cleaned_data['working_fluid']
@@ -95,8 +103,16 @@ def plot_binary(request):
             injection_well_temperature = form.cleaned_data['injection_well_temperature']
             suerheat = form.cleaned_data['suerheat']
             turbine_inlet_pressure =  form.cleaned_data['turbine_inlet_pressure']
+            condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
 
-        return render(request, 'Overview/binary_cycle_plot.html')
+            try:
+                output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], suerheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
+            except Exception as error:
+                form.add_error(None, error)
+
+
+    return render(request, 'Overview/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
+                                                                   'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures'])})
 
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'

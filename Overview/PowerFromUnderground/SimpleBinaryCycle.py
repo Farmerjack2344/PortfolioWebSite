@@ -1,3 +1,6 @@
+from Overview.PowerFromUnderground.linspace import linspace
+
+
 def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
 
     """
@@ -155,12 +158,45 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
                       min(state_entropies), condenser_out_temperature - (Heat_out/(m_dot_working*4*PropsSI('C','T', dead_state,'P', 101325, 'Air'))),#Inlet
                       max(state_entropies), condenser_out_temperature]#Outlet condenser_out_temperature
 
-    return Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource
+    Tmin = PropsSI('Tmin', working_fluid)
+    Tmax = PropsSI('Tmax', working_fluid)
 
-T_production = 165+273.15
-working_fluid = "R601"
-Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource = SimpleBinary(working_fluid, 442.5, [T_production, 136+273.15] , 0, 15.5e5, 317.885)
+    S_liq = []
+    S_vap = []
 
-for i in [Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource]:
-    print(i)
-    print("\n"*5)
+    temperature_range = linspace(Tmin, Tmax, 300)
+
+    for temperature in temperature_range:
+
+        S_liq.append(PropsSI('S','T',temperature,'Q',0,working_fluid))
+        S_vap.append(PropsSI('S','T',temperature,'Q',1,working_fluid))
+
+    S_liq_vap = [S_liq, S_vap]
+
+    Pmin = PropsSI('Pmin', working_fluid)
+    Pmax = PropsSI('Pmax', working_fluid)
+
+    H_liq = []
+    H_vap = []
+
+    pressure_range = linspace(Pmin, Pmax, 300)
+
+    for pressure in temperature_range:
+        S_liq.append(PropsSI('S', 'T', pressure, 'Q', 0, working_fluid))
+        S_vap.append(PropsSI('S', 'T', pressure, 'Q', 1, working_fluid))
+
+    H_liq_vap = [H_liq, H_vap]
+
+    saturation_dome = [temperature_range, S_liq_vap, pressure_range,  H_liq_vap]
+
+    output = {'Work_out': Work_out, 'Work_in':Work_in, 'Heat_out': Heat_out, 'state_entropies':state_entropies, 'state_temperatures':state_temperatures,'state_pressures': state_pressures,
+              'state_enthalpies': state_enthalpies,'CTE':CTE, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
+    return output
+
+# T_production = 165+273.15
+# working_fluid = "R601"
+# Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource = SimpleBinary(working_fluid, 442.5, [T_production, 136+273.15] , 0, 15.5e5, 317.885)
+#
+# for i in [Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource]:
+#     print(i)
+#     print("\n"*5)
