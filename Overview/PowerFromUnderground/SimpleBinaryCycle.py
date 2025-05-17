@@ -159,7 +159,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
                       max(state_entropies), condenser_out_temperature]#Outlet condenser_out_temperature
 
     Tmin = PropsSI('Tmin', working_fluid)
-    Tmax = PropsSI('Tmax', working_fluid)
+    Tmax = PropsSI('Tcrit', working_fluid)
 
     S_liq = []
     S_vap = []
@@ -167,27 +167,34 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     temperature_range = linspace(Tmin, Tmax, 300)
 
     for temperature in temperature_range:
-
-        S_liq.append(PropsSI('S','T',temperature,'Q',0,working_fluid))
-        S_vap.append(PropsSI('S','T',temperature,'Q',1,working_fluid))
-
+        try:
+            S_liq.append(PropsSI('S','T',temperature,'Q',0,working_fluid))
+            S_vap.append(PropsSI('S','T',temperature,'Q',1,working_fluid))
+        except Exception as error:
+            print(error)
+            pass
     S_liq_vap = [S_liq, S_vap]
 
-    Pmin = PropsSI('Pmin', working_fluid)
-    Pmax = PropsSI('Pmax', working_fluid)
+    Pmin = PropsSI('pmin', working_fluid)
+    Pmax = PropsSI('pcrit', working_fluid)
 
     H_liq = []
     H_vap = []
 
     pressure_range = linspace(Pmin, Pmax, 300)
 
-    for pressure in temperature_range:
-        S_liq.append(PropsSI('S', 'T', pressure, 'Q', 0, working_fluid))
-        S_vap.append(PropsSI('S', 'T', pressure, 'Q', 1, working_fluid))
+    for pressure in pressure_range:
+        try:
+            H_liq.append(PropsSI('H', 'P', pressure, 'Q', 0, working_fluid))
+            H_vap.append(PropsSI('H', 'P', pressure, 'Q', 1, working_fluid))
+        except Exception as error:
+            print(error)
+            pass
+
 
     H_liq_vap = [H_liq, H_vap]
 
-    saturation_dome = [temperature_range, S_liq_vap, pressure_range,  H_liq_vap]
+    saturation_dome = [temperature_range, S_liq, S_vap, pressure_range,  H_liq, H_vap]
 
     output = {'Work_out': Work_out, 'Work_in':Work_in, 'Heat_out': Heat_out, 'state_entropies':state_entropies, 'state_temperatures':state_temperatures,'state_pressures': state_pressures,
               'state_enthalpies': state_enthalpies,'CTE':CTE, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}

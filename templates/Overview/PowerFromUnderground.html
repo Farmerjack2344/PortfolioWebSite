@@ -69,8 +69,8 @@
 
             <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
             <figure>
-                <img src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
-                <figcaptioncaption>Schematic for the flash Cycle used</figcaptioncaption>
+                <img class="figure" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
+                <figcaption class="text-sm text-gray-600 mt-2">Schematic for the flash Cycle used</figcaption>
             </figure>
             <p>
               Produced a peak of ~350 kW at a pressure drop of 32%. However, it required high geofluid
@@ -84,8 +84,8 @@
 
             <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
               <figure>
-                <img src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
-                <figcaption>Schematic for the Binary Cycle used</figcaption>
+                <img class="figure" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
+                <figcaption class="text-sm text-gray-600 mt-2">Schematic for the Binary Cycle used</figcaption>
               </figure>
             <p>
               Reached 1.8–2 MW using R218, with the best performance at low injection well temperatures and
@@ -93,8 +93,8 @@
             </p>
 
             <figure>
-                <img src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
-                <figcaption>Bar chart of work output vs working fluid</figcaption>
+                <img class="figure" src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
+                <figcaption class="text-sm text-gray-600 mt-2">Bar chart of work output vs working fluid</figcaption>
             </figure>
             <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
             <p>As with the Flash Cycle, you can find my Binary Model and run simulations <a href="{% url  'overview:plot_binary'%}">here</a>.</p>
@@ -111,7 +111,7 @@
 
 
               <figure>
-                  <img src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
                   <figcaption class="text-sm text-gray-600 mt-2">
                     Schematic for the Hybrid Cycle used
                   </figcaption>
@@ -123,13 +123,13 @@
             </p>
 
             <figure>
-                  <img src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
                   <figcaption class="text-sm text-gray-600 mt-2">
                     Results of the simulation
                   </figcaption>
               </figure>
             <figure>
-                  <img src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                  <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
                   <figcaption class="text-sm text-gray-600 mt-2">
                     Results of the simulation Parametric study
                   </figcaption>

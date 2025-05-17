@@ -3,7 +3,8 @@
     width: 700px;               /* Make sure the container is large enough */
     height: 600px;
     margin: 5px auto;          /* Center the whole div horizontally */
-    border: 1px solid black;
+    border: 2px solid black;
+    padding: 5px;
     display: flex;              /* Use flex to center the chart inside */
     justify-content: center;   /* Horizontally center the chart */
     

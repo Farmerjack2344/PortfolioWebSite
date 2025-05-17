@@ -22,3 +22,7 @@ body{
 .jumbotron{
     padding: 20px;
     }
+
+.figure{
+    border: black 1px solid;
+}
