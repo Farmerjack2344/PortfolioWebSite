@@ -18,6 +18,7 @@ urlpatterns = [
     path('CV/', views.CVView.as_view(), name='CV'),
     path('Portfolio/', views.portfolio, name='portfolio'),
     path('FlashCyclePlot/', views.plot_flash, name='plot_flash'),
+    path('BinaryCyclePlot/', views.plot_binary, name='plot_binary'),
     path('Examples', views.HTMLView.as_view(), name='examples'),
 
 ]

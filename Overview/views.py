@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from sympy.physics.units import temperature
 
-from Overview.forms import FlashInputForm
+from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from CoolProp.CoolProp import PropsSI
 from Overview.PowerFromUnderground.linspace import linspace
+from .PowerFromUnderground.SimpleBinaryCycle import working_fluid
 from .models import Project
 import json
 
@@ -55,7 +56,7 @@ def plot_flash(request):
                 # Base run for plotting
                 output = FlashCycle(
                     m_dot, init_temp=T1, final_temp=T2, init_pressure=P1,
-                    pressure_change=dP, PropsSI=PropsSI, linspace=linspace
+                    pressure_change=(dP/100), PropsSI=PropsSI, linspace=linspace
                 )
 
                 # Parametric analysis
@@ -81,6 +82,21 @@ def plot_flash(request):
         'para_work_out_array': json.dumps(para_work_out_array),
         'percentage_array': json.dumps(percentage_array)
     })
+
+def plot_binary(request):
+    form  = BinaryInputForm()
+
+    if request.method("POST"):
+        form = BinaryInputForm(request.POST)
+        if form.is_valid():
+            working_fluid = form.cleaned_data['working_fluid']
+            m_geo_dot = form.cleaned_data['mass_geo_flow_rate']
+            production_well_temperature = form.cleaned_data['production_well_temperature']
+            injection_well_temperature = form.cleaned_data['injection_well_temperature']
+            suerheat = form.cleaned_data['suerheat']
+            turbine_inlet_pressure =  form.cleaned_data['turbine_inlet_pressure']
+
+        return render(request, 'Overview/binary_cycle_plot.html')
 
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'
