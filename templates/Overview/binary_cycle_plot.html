@@ -14,44 +14,43 @@
         <div class="jumbotron shadow">
             <h2>Binary Cycle Inputs</h2>
 
-            <form method="POST">
-                {% csfr_token %}
-                {{form.as_p }}
-                <button type="Submit">Run Simulation</button>
-                <button type="reset" style="color:  rgb(209, 122, 40);">Clear</button>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<!-- The form here comes from the overview view for the flash plot. DOnt be confused-->
+                <button type="submit">Run Simulation</button>
+                <button type="reset" style="Background: rgb(209, 122, 40);">Clear</button>
             </form>
 
             <div class="PFUPlot">
 
-                <div id="tsPlot">
+                <div id="tsPlot" style="width:100%; height: 100%;">
+                    <script>
+                        const Temperatures = {{ Temperatures | safe }}
+                        const Entropies = {{ Entropies | safe }}
+                        
 
-                    const Temperatures = {{ state_temperatures | safe }}
-                    const Entropies = {{ state_entropies | safe }}
-                    const Pressure = {{ state_pressures | safe }}
-                    const Enthalpy = {{ state_enthalpy | safe }}
+                        const tsData = [{
+                            x: Entropies,
+                            y: Temperatures,
+                            mode: 'lines+markers+text',
+                            name: 'Cycle',
+                            marker: { color: 'green' },
+                            
+                            textposition: 'bottom right'
+                            }]
 
-                    const tsData = [{
-                          x: Entropies,
-                          y: Temperatures,
-                          mode: 'lines+markers+text',
-                          name: 'Cycle',
-                          marker: { color: 'green' },
-                          text: labels,
-                          textposition: 'bottom right'
-                        }]
-
-                    Plotly.newPlot('tsPlot', tsData, {
-                        title: 'T–s Diagram of Flash Cycle',
-                        xaxis: { title: 'Entropy (J/kg·K)' },
-                        yaxis: { title: 'Temperature (K)' },
-                        legend: { x: 1, y: 1 }
-                      },
-                      {
-                      responsive: true,
-                      displayModeBar: true,
-                      useResizeHandler: true
-                      })
-
+                        Plotly.newPlot('tsPlot', tsData, {
+                            title: 'T–s Diagram of Flash Cycle',
+                            xaxis: { title: 'Entropy (J/kg·K)' },
+                            yaxis: { title: 'Temperature (K)' },
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                        responsive: true,
+                        displayModeBar: true,
+                        useResizeHandler: true
+                        })
+                    </script>
                 </div>
 
             </div>
@@ -59,34 +58,34 @@
 
             <div class="PFUPlot">
 
-                <div id="phPlot">
+                <div id="phPlot" style="width:100%; height: 100%;">
 
+                    <script>    
+                        const Pressures = {{ Pressures | safe }}
+                        const Enthalpies = {{ Enthalpies | safe }}
+                        
+                        const phData = [{
+                            x: Enthalpies,
+                            y: Pressures,
+                            mode: 'lines+markers+text',
+                            name: 'Cycle',
+                            marker: { color: 'green' },
+                            
+                            textposition: 'bottom right'
+                            }]
 
-                    const Pressure = {{ state_pressures | safe }}
-                    const Enthalpy = {{ state_enthalpy | safe }}
-
-                    const tsData = [{
-                          x: Enthalpy,
-                          y: Temperatures,
-                          mode: 'lines+markers+text',
-                          name: 'Cycle',
-                          marker: { color: 'green' },
-                          text: labels,
-                          textposition: 'bottom right'
-                        }]
-
-                    Plotly.newPlot('tsPlot', tsData, {
-                        title: 'P-h Diagram of Flash Cycle',
-                        xaxis: { title: 'Enthalpy (J/kg·K)' },
-                        yaxis: { title: 'Pressure (K)' },
-                        legend: { x: 1, y: 1 }
-                      },
-                      {
-                      responsive: true,
-                      displayModeBar: true,
-                      useResizeHandler: true
-                      })
-
+                        Plotly.newPlot('phPlot', phData, {
+                            title: 'P-h Diagram of Flash Cycle',
+                            xaxis: { title: 'Enthalpy (J/kg)' },
+                            yaxis: { title: 'Pressure (K)' },
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                        responsive: true,
+                        displayModeBar: true,
+                        useResizeHandler: true
+                        })
+                    </script>
                 </div>
 
             </div>

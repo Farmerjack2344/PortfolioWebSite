@@ -98,15 +98,16 @@ def plot_binary(request):
         form = BinaryInputForm(request.POST)
         if form.is_valid():
             working_fluid = form.cleaned_data['working_fluid']
-            m_geo_dot = form.cleaned_data['mass_geo_flow_rate']
+            m_geo_dot = form.cleaned_data['mass_flow_rate']
             production_well_temperature = form.cleaned_data['production_well_temperature']
             injection_well_temperature = form.cleaned_data['injection_well_temperature']
-            suerheat = form.cleaned_data['suerheat']
+            suerheat = form.cleaned_data['superheat']
             turbine_inlet_pressure =  form.cleaned_data['turbine_inlet_pressure']
             condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], suerheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
+
             except Exception as error:
                 form.add_error(None, error)
 

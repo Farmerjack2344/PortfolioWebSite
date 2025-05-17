@@ -18,7 +18,7 @@ class FlashInputForm(forms.Form):
 
 
 class BinaryInputForm(forms.Form):
-    working_fluid = forms.CharField(label="Working Fluid:", max_length=100, validators=[validate_working_fluid])
+    working_fluid = forms.CharField(label="Working Fluid:", max_length=100)
     mass_flow_rate = forms.FloatField(label="Mass Flow Rate of geo fluid (kg/s):")
     production_well_temperature = forms.FloatField(label="Temperature at the production well  (K):")
     injection_well_temperature = forms.FloatField(label="Temperature at the injection well (K):")

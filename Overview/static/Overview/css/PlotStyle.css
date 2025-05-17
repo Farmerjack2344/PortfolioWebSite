@@ -9,3 +9,19 @@
     justify-content: center;   /* Horizontally center the chart */
     align-items: center;
 }
+
+#tsPlot{
+    width: 100%;               /* Make the chart take the full width of the container */
+    height: 100%;              /* Make the chart take the full height of the container */
+    display: flex;             /* Use flex to center the chart inside */
+    justify-content: center;   /* Horizontally center the chart */
+    align-items: center;
+}
+
+#phPlot{
+    width: 100%;               /* Make the chart take the full width of the container */
+    height: 100%;              /* Make the chart take the full height of the container */
+    display: flex;             /* Use flex to center the chart inside */
+    justify-content: center;   /* Horizontally center the chart */
+    align-items: center;
+}
