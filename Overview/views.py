@@ -74,7 +74,7 @@ def plot_flash(request):
                 form.add_error(None, error)
 
     return render(request, 'Overview/flash_cycle_plot.html', {
-        'form': form,
+        'form': form, 'pressure_change':dP,
         'Entropies': json.dumps(output["state_entropies"]),
         'Temperatures': json.dumps(output["state_temperatures"]),
         'Sliq': json.dumps(output["S_liq"]),
@@ -90,7 +90,8 @@ def plot_binary(request):
         'state_enthalpies': [],
         'state_pressures': [],
         'state_entropies': [],
-        'state_temperatures' : []
+        'state_temperatures' : [],
+        'saturation_dome': []
     }
 
 
