@@ -3,9 +3,25 @@
     width: 700px;               /* Make sure the container is large enough */
     height: 600px;
     margin: 5px auto;          /* Center the whole div horizontally */
-    border: 1px solid black;
+    border: 2px solid black;
+    padding: 5px;
     display: flex;              /* Use flex to center the chart inside */
     justify-content: center;   /* Horizontally center the chart */
-    
+    align-items: center;
 }
 
+#tsPlot{
+    width: 100%;               /* Make the chart take the full width of the container */
+    height: 100%;              /* Make the chart take the full height of the container */
+    display: flex;             /* Use flex to center the chart inside */
+    justify-content: center;   /* Horizontally center the chart */
+    align-items: center;
+}
+
+#phPlot{
+    width: 100%;               /* Make the chart take the full width of the container */
+    height: 100%;              /* Make the chart take the full height of the container */
+    display: flex;             /* Use flex to center the chart inside */
+    justify-content: center;   /* Horizontally center the chart */
+    align-items: center;
+}

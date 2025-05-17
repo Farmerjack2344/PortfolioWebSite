@@ -183,7 +183,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
 
     pressure_range = linspace(Pmin, Pmax, 300)
 
-    for pressure in pressure_range:
+    for pressure in temperature_range:
         try:
             H_liq.append(PropsSI('H', 'P', pressure, 'Q', 0, working_fluid))
             H_vap.append(PropsSI('H', 'P', pressure, 'Q', 1, working_fluid))
@@ -194,7 +194,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
 
     H_liq_vap = [H_liq, H_vap]
 
-    saturation_dome = [temperature_range, S_liq, S_vap, pressure_range,  H_liq, H_vap]
+    saturation_dome = [temperature_range, S_liq_vap, pressure_range,  H_liq_vap]
 
     output = {'Work_out': Work_out, 'Work_in':Work_in, 'Heat_out': Heat_out, 'state_entropies':state_entropies, 'state_temperatures':state_temperatures,'state_pressures': state_pressures,
               'state_enthalpies': state_enthalpies,'CTE':CTE, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
