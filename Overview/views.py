@@ -43,6 +43,7 @@ def plot_flash(request):
         'S_liq': [],
         'S_vap': [],
         'temperature_range':[]}
+    dP = 0
 
     if request.method == 'POST':
         form = FlashInputForm(request.POST)
