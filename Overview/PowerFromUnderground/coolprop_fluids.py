@@ -1,3 +1,4 @@
+from CoolProp.CoolProp import PropsSI
 coolprop_fluids = [
     ("1-Butene", "1-Butene"),
     ("Acetone", "Acetone"),
@@ -119,3 +120,30 @@ coolprop_fluids = [
     ("p-Xylene", "p-Xylene"),
     ("trans-2-Butene", "trans-2-Butene")
 ]
+
+
+def property_generator(selected_fluids , PropsSI):
+    # This function is used to generate the properties of the fluids
+    temperature = 25 + 273.15
+    pressure = 101325
+    
+    for fluid in selected_fluids:
+        try:
+                h_liquid = PropsSI('H', 'T', temperature, 'Q', 0, fluid)
+                h_vapor = PropsSI('H', 'T', temperature, 'Q', 1, fluid)
+                latent_heat_vaporisation = h_vapor - h_liquid
+                specific_heat_capacity = PropsSI('C', 'T', temperature, 'P', pressure, fluid)
+                Density_L= PropsSI('D', 'T', temperature, 'Q', 0, fluid)
+                Density_G= PropsSI('D', 'T', temperature, 'Q', 1, fluid)
+                Evaporation_temp = PropsSI('T', 'P', pressure, 'Q', 0, fluid)
+                yield [latent_heat_vaporisation, specific_heat_capacity, Density_L, Density_G, Evaporation_temp]
+        except Exception as error:
+            print(f"Error retrieving properties for {fluid}: {error}")
+            yield [None, None, None, None, None]
+
+if __name__ == "__main__":
+    # Example usage
+    
+    selected_fluids = ["WATER", "R600"]
+    for properties in property_generator(selected_fluids, PropsSI):
+        print(properties)

@@ -18,27 +18,52 @@
                 Here you will find a list of fluids and can tick them and the fluids that you select will appear in a generated table.
             </p>
             
-            <style>
-                .checkbox-grid{
-                    display: grid;
-                    grid-template-columns: repeat(6, 1fr);
-                    gap: 10px;
-                }
-            </style>
+            
 
-            <form>
+            <form method="POST">
+                {% csrf_token %}
                 <p>Select the fluids you want to compare:</p>
                 <div class="fluid-list checkbox-grid">
                     {% for fluid in fluids %}
                         
                             <label>
-                                <input type="checkbox" name="{{ fluid.1 }}" value="{{ fluid.0 }}">{{ fluid.1 }}
+                                <input type="checkbox" name="fluids" value="{{ fluid.0 }}">{{ fluid.1 }}
                             </label>
                         
                     {% endfor %}
                 </div>
+                <input type="submit" value="Submit">
             </form>
             
+            {% if selected_fluids %}
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Fluid Name</th>
+                            <th>Latent Heat of Vapourisation(J/kg)</th>
+                            <th>Specific Heat Capacity (J/kg . K)</th>
+                            <th>Density(Liquid) (kg/m³)</th>
+                            <th>Density(Gas) (kg/m³)</th>
+                            <th>Evaporation Temperature (K)</th>
+                            
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for fluid in selected_fluids %}
+                            <tr>
+                                <td>{{ selected_fluids.0 }}</td>
+                                <td>{{ fluid.0 }}</td>
+                                <td>{{ fluid.1 }}</td>
+                                <td>{{ fluid.2 }}</td>
+                                <td>{{ fluid.3 }}</td>
+                                <td>{{ fluid.4 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
             
         </div>
     </div>

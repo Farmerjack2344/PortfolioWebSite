@@ -6,9 +6,9 @@ from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary
 from Overview.PowerFromUnderground.linspace import linspace
-from Overview.PowerFromUnderground.coolprop_fluids import coolprop_fluids
+from Overview.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 
-from CoolProp.CoolProp import PropsSI
+from CoolProp.CoolProp import PropsSI # type: ignore
 
 
 from .models import Project
@@ -123,7 +123,20 @@ def plot_binary(request):
 
 
 def comparison_table(request):
-    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids})
+    # This function is used to create a comparison table for the fluids
+    fluid_properties = []
+    selected_fluids = []
+    if request.method == 'POST':
+        selected_fluids = request.POST.getlist('fluids')
+        # for property in property_generator(selected_fluids, PropsSI):
+        #     fluid_properties.append(property)
+        selected_fluids = [x.upper() for x in selected_fluids]
+        for fluid in property_generator(selected_fluids, PropsSI):
+            fluid_properties.append(fluid)
+
+
+    
+    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids, 'selected_fluids': selected_fluids, 'fluid_properties': fluid_properties})
 
 
 class ACCTView(TemplateView):
