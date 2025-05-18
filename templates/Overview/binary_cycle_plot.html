@@ -20,7 +20,11 @@
                 <button type="submit">Run Simulation</button>
                 <button type="reset" style="Background: rgb(209, 122, 40);">Clear</button>
             </form>
-
+            <br>
+            <p>The working fluid for a Binary Cycle is a very important decider in its performance.
+            There are alot of fluids that are available in CoolProp. To help in the selection I made a table that helps 
+            in the comparison of the fluids.<br>You can find it here: <a href="{% url 'overview:comparison_table' %}">Working Fluid Comparison</a>
+            </p>
             <div class="PFUPlot">
 
                 <div id="tsPlot" style="width:100%; height: 100%;">

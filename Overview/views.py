@@ -5,8 +5,11 @@ from sympy.physics.units import temperature
 from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary
-from CoolProp.CoolProp import PropsSI
 from Overview.PowerFromUnderground.linspace import linspace
+from Overview.PowerFromUnderground import coolprop_fluids
+
+from CoolProp.CoolProp import PropsSI
+
 
 from .models import Project
 import json
@@ -117,6 +120,11 @@ def plot_binary(request):
     return render(request, 'Overview/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
                                                                    'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
                                                                'saturation_dome': json.dumps(output['saturation_dome'])})
+
+
+def comparison_table(request):
+    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids})
+
 
 class ACCTView(TemplateView):
     template_name = 'Overview/ACCTT.html'

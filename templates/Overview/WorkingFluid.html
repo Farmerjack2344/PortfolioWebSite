@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+
+
+{% block body_block %}
+    <div class="container">
+        <div class="jumbotron shadow">
+            <h2>Working Fluid</h2>
+            <p>I made this section to create an easy way to compare the different fluids that are available in CoolProp.
+                I have used the <a href="http://www.coolprop.org/fluid_properties/PurePseudoPure.html#list-of-fluids">CoolProp</a> library to get the properties of the fluids.
+                The fluids are then plotted on a T-s diagram to show the differences in the fluids.
+                <br>
+                <br>
+                Here you will find a list of fluids and can tick them and the fluids that you select will appear in a generated table.
+            </p>
+            <div class="fluid-list">
+                <form>
+                    <p>Select the fluids you want to compare:</p>
+                    {%for fluid in fluids%}
+                        <div>
+                            <label>
+                                <input type="checkbox" name="{{ fluid.1}}" value="{{ fluid.0}}">{fluid.1}
+
+                            </label>
+
+                        </div>
+                    {% endfor%}
+                </form>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

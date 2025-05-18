@@ -66,7 +66,7 @@
 
           <section class="mb-10">
             <h2 class="text-3xl font-semibold text-blue-800">Results and Discussion</h2>
-
+            <div>
             <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
             <figure>
                 <img class="figure" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
@@ -77,11 +77,11 @@
               temperatures and flow rates, making it unsuitable for Cornwall's relatively moderate conditions.
             </p>
 
-            <p>You can find my flash model <a href="{% url  'overview:plot_flash'%}">here</a></p> and run a simulation.
+            <p>You can find my flash model here:<a href="{% url  'overview:plot_flash'%}">Flash Cycle Simulation</a></p> and run a simulation.
+            </div>
 
 
-
-
+          <div class="container">
             <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
               <figure>
                 <img class="figure" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
@@ -99,43 +99,43 @@
             <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
             <p>As with the Flash Cycle, you can find my Binary Model and run simulations <a href="{% url  'overview:plot_binary'%}">here</a>.</p>
 
+          </div>
 
 
 
 
 
 
+            <div class="container">
+              <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
 
 
-            <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
-
+                <figure>
+                    <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                    <figcaption class="text-sm text-gray-600 mt-2">
+                      Schematic for the Hybrid Cycle used
+                    </figcaption>
+                </figure>
+              <p>
+                Combined both cycles for a peak output of 2.07 MW and thermal efficiency of ~14%. While
+                complexity increases, it offered the most sustainable long-term performance due to enhanced
+                heat recovery.
+              </p>
 
               <figure>
-                  <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                  <figcaption class="text-sm text-gray-600 mt-2">
-                    Schematic for the Hybrid Cycle used
-                  </figcaption>
-              </figure>
-            <p>
-              Combined both cycles for a peak output of 2.07 MW and thermal efficiency of ~14%. While
-              complexity increases, it offered the most sustainable long-term performance due to enhanced
-              heat recovery.
-            </p>
-
-            <figure>
-                  <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                  <figcaption class="text-sm text-gray-600 mt-2">
-                    Results of the simulation
-                  </figcaption>
-              </figure>
-            <figure>
-                  <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                  <figcaption class="text-sm text-gray-600 mt-2">
-                    Results of the simulation Parametric study
-                  </figcaption>
-              </figure>
-            <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
-
+                    <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                    <figcaption class="text-sm text-gray-600 mt-2">
+                      Results of the simulation
+                    </figcaption>
+                </figure>
+              <figure>
+                    <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                    <figcaption class="text-sm text-gray-600 mt-2">
+                      Results of the simulation Parametric study
+                    </figcaption>
+                </figure>
+              <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
+            </div>
             <p class="mt-4 font-semibold">Key Insight:</p>
             <p>
               Higher efficiency is critical for sustainability — hybrid cycles allow better long-term resource
