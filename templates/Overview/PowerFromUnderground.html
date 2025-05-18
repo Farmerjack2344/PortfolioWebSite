@@ -4,8 +4,8 @@
 
 {% block body_block %}
 
-    <div class="container">
-        <div class="jumbotron shadow">
+    <!--div class="container"-->
+        <div class="jumbotron shadow" style="margin-top: 20px; background-color: #dfe6eb;">
             <section class="mb-10">
             <h2 class="text-3xl font-semibold text-blue-800">Project Overview</h2>
             <p>
@@ -63,110 +63,124 @@
               outperformed it in terms of both work output and thermal efficiency.
             </p>
           </section>
-
-          <section class="mb-10">
-            <h2 class="text-3xl font-semibold text-blue-800">Results and Discussion</h2>
-            <div>
-            <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
-            <figure>
-                <img class="figure" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
-                <figcaption class="text-sm text-gray-600 mt-2">Schematic for the flash Cycle used</figcaption>
-            </figure>
-            <p>
-              Produced a peak of ~350 kW at a pressure drop of 32%. However, it required high geofluid
-              temperatures and flow rates, making it unsuitable for Cornwall's relatively moderate conditions.
-            </p>
-
-            <p>You can find my flash model here:<a href="{% url  'overview:plot_flash'%}">Flash Cycle Simulation</a></p> and run a simulation.
-            </div>
-
-
-          <div class="container">
-            <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
-              <figure>
-                <img class="figure" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
-                <figcaption class="text-sm text-gray-600 mt-2">Schematic for the Binary Cycle used</figcaption>
-              </figure>
-            <p>
-              Reached 1.8–2 MW using R218, with the best performance at low injection well temperatures and
-              high turbine inlet pressures. n-pentane and cyclopentane provided even better efficiency.
-            </p>
-
-            <figure>
-                <img class="figure" src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
-                <figcaption class="text-sm text-gray-600 mt-2">Bar chart of work output vs working fluid</figcaption>
-            </figure>
-            <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
-            <p>As with the Flash Cycle, you can find my Binary Model and run simulations <a href="{% url  'overview:plot_binary'%}">here</a>.</p>
-
-          </div>
-
-
-
-
-
-
-            <div class="container">
-              <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
-
-
-                <figure>
-                    <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                    <figcaption class="text-sm text-gray-600 mt-2">
-                      Schematic for the Hybrid Cycle used
-                    </figcaption>
-                </figure>
-              <p>
-                Combined both cycles for a peak output of 2.07 MW and thermal efficiency of ~14%. While
-                complexity increases, it offered the most sustainable long-term performance due to enhanced
-                heat recovery.
-              </p>
-
-              <figure>
-                    <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                    <figcaption class="text-sm text-gray-600 mt-2">
-                      Results of the simulation
-                    </figcaption>
-                </figure>
-              <figure>
-                    <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
-                    <figcaption class="text-sm text-gray-600 mt-2">
-                      Results of the simulation Parametric study
-                    </figcaption>
-                </figure>
-              <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
-            </div>
-            <p class="mt-4 font-semibold">Key Insight:</p>
-            <p>
-              Higher efficiency is critical for sustainability — hybrid cycles allow better long-term resource
-              use, delaying temperature drawdown in Enhanced Geothermal Systems (EGS) like Cornwall's.
-            </p>
-          </section>
-
-          <section class="mb-10">
-            <h2 class="text-3xl font-semibold text-blue-800">Tools and Technologies</h2>
-            <ul class="list-disc list-inside">
-              <li>MATLAB for model development and data visualization</li>
-              <li>CoolProp for accurate fluid property calculations</li>
-              <li>Parametric studies with contour and bar plots</li>
-              <li>Validation with international case studies (Mexico and Costa Rica)</li>
-            </ul>
-          </section>
-
-          <section class="mb-10">
-            <h2 class="text-3xl font-semibold text-blue-800">Conclusion</h2>
-            <p>
-              The hybrid flash-binary cycle is the most suitable configuration for geothermal power generation
-              in the UK based on performance, efficiency, and adaptability. While more complex, its greater energy
-              output and efficient heat recovery make it a better long-term investment, especially in Enhanced
-              Geothermal Systems like UDDGP.
-            </p>
-            <p class="mt-2">
-              Future improvements could include the use of optimization algorithms and development of a user
-              interface for broader usability by engineers and researchers.
-            </p>
-          </section>
         </div>
-    </div>
+    <!--/div-->
+
+
+
+          <section class="mb-10 container" style="margin-top: 25px;">
+            
+              <div class=" jumbotron shadow PFUCycleInfo">
+                  <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
+                  <figure>
+                      <img class="figure" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
+                      <figcaption class="text-sm text-gray-600 mt-2">Schematic for the flash Cycle used</figcaption>
+                  </figure>
+                  <p>
+                    Produced a peak of ~350 kW at a pressure drop of 32%. However, it required high geofluid
+                    temperatures and flow rates, making it unsuitable for Cornwall's relatively moderate conditions.
+                  </p>
+
+                  <p>You can find my flash model here:<a href="{% url  'overview:plot_flash'%}">Flash Cycle Simulation</a></p>and run a simulation.
+                
+              </div>
+          </section>
+
+          <section class="mb-10 container" style="margin-top: 20px;">
+              <div class="jumbotron PFUCycleInfo shadow">
+                    <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
+                      <figure>
+                        <img class="figure" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
+                        <figcaption class="text-sm text-gray-600 mt-2">Schematic for the Binary Cycle used</figcaption>
+                      </figure>
+                    <p>
+                      Reached 1.8–2 MW using R218, with the best performance at low injection well temperatures and
+                      high turbine inlet pressures. n-pentane and cyclopentane provided even better efficiency.
+                    </p>
+
+                    <figure>
+                        <img class="figure" src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
+                        <figcaption class="text-sm text-gray-600 mt-2">Bar chart of work output vs working fluid</figcaption>
+                    </figure>
+                    <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
+                    <p>As with the Flash Cycle, you can find my Binary Model and run simulations <a href="{% url  'overview:plot_binary'%}">here</a>.</p>
+
+              </div>
+          </section>
+
+
+
+
+
+          <section class="mb-10 container" style="margin-top: 20px;">
+              <div class="PFUCycleInfo jumbotron shadow" style="margin-top: 20px;">
+                    <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
+
+
+                      <figure>
+                          <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Schematic for the Hybrid Cycle used
+                          </figcaption>
+                      </figure>
+                    <p>
+                      Combined both cycles for a peak output of 2.07 MW and thermal efficiency of ~14%. While
+                      complexity increases, it offered the most sustainable long-term performance due to enhanced
+                      heat recovery.
+                    </p>
+
+                    <figure>
+                          <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Results of the simulation
+                          </figcaption>
+                      </figure>
+                    <figure>
+                          <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Results of the simulation Parametric study
+                          </figcaption>
+                      </figure>
+                    <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
+              </div>
+          </section>
+
+
+          <div class="jumbotron" style="margin-top: 20px;background-color: #dfe6eb;">
+              <!--div class="jumbotron"-->
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Key Insights:</h2>
+                  <p>
+                    Higher efficiency is critical for sustainability — hybrid cycles allow better long-term resource
+                    use, delaying temperature drawdown in Enhanced Geothermal Systems (EGS) like Cornwall's.
+                  </p>
+                </section>
+
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Tools and Technologies</h2>
+                  <ul class="list-disc list-inside">
+                    <li>MATLAB for model development and data visualization</li>
+                    <li>CoolProp for accurate fluid property calculations</li>
+                    <li>Parametric studies with contour and bar plots</li>
+                    <li>Validation with international case studies (Mexico and Costa Rica)</li>
+                  </ul>
+                </section>
+
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Conclusion</h2>
+                  <p>
+                    The hybrid flash-binary cycle is the most suitable configuration for geothermal power generation
+                    in the UK based on performance, efficiency, and adaptability. While more complex, its greater energy
+                    output and efficient heat recovery make it a better long-term investment, especially in Enhanced
+                    Geothermal Systems like UDDGP.
+                  </p>
+                  <p class="mt-2">
+                    Future improvements could include the use of optimization algorithms and development of a user
+                    interface for broader usability by engineers and researchers.
+                  </p>
+                </section>
+              <!--/div-->
+          </div>
+        </div>
 
 {% endblock %}

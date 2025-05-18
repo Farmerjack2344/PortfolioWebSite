@@ -6,7 +6,7 @@ from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
 from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary
 from Overview.PowerFromUnderground.linspace import linspace
-from Overview.PowerFromUnderground import coolprop_fluids
+from Overview.PowerFromUnderground.coolprop_fluids import coolprop_fluids
 
 from CoolProp.CoolProp import PropsSI
 

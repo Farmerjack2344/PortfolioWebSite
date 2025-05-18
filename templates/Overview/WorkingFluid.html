@@ -2,7 +2,9 @@
 {% extends "base.html"%}
 {% load static %}
 
-
+{% block extra_css%}
+ <link rel="stylesheet"  type="text/css" href="{% static 'Overview/css/PFUStyle.css' %}">
+{% endblock %}
 
 {% block body_block %}
     <div class="container">
@@ -15,20 +17,28 @@
                 <br>
                 Here you will find a list of fluids and can tick them and the fluids that you select will appear in a generated table.
             </p>
-            <div class="fluid-list">
-                <form>
-                    <p>Select the fluids you want to compare:</p>
-                    {%for fluid in fluids%}
-                        <div>
+            
+            <style>
+                .checkbox-grid{
+                    display: grid;
+                    grid-template-columns: repeat(6, 1fr);
+                    gap: 10px;
+                }
+            </style>
+
+            <form>
+                <p>Select the fluids you want to compare:</p>
+                <div class="fluid-list checkbox-grid">
+                    {% for fluid in fluids %}
+                        
                             <label>
-                                <input type="checkbox" name="{{ fluid.1}}" value="{{ fluid.0}}">{fluid.1}
-
+                                <input type="checkbox" name="{{ fluid.1 }}" value="{{ fluid.0 }}">{{ fluid.1 }}
                             </label>
-
-                        </div>
-                    {% endfor%}
-                </form>
-            </div>
+                        
+                    {% endfor %}
+                </div>
+            </form>
+            
             
         </div>
     </div>
