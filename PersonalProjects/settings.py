@@ -132,7 +132,7 @@ MEDIA_URL = '/media/'  # URL to access media files
 MEDIA_ROOT = BASE_DIR.joinpath('Blog/media')#os.path.join(BASE_DIR, 'media')
 # Directory to store uploaded files
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT =  BASE_DIR.joinpath('staticfiles')
 STATICFILES_DIRS = [BASE_DIR.joinpath('Overview/static'),
                     BASE_DIR.joinpath('Blog/static')]
