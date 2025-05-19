@@ -61,7 +61,7 @@ coolprop_fluids = [
     ("R113", "R-113"),
     ("R114", "R-114"),
     ("R115", "R-115"),
-    ("R116", "R-116"),
+    #("R116", "R-116"),
     ("R12", "R-12"),
     ("R123", "R-123"),
     ("R1233zd(E)", "R-1233zd(E)"),
@@ -118,28 +118,42 @@ coolprop_fluids = [
     ("n-Undecane", "n-Undecane"),
     ("o-Xylene", "o-Xylene"),
     ("p-Xylene", "p-Xylene"),
-    ("trans-2-Butene", "trans-2-Butene")
+    ("Trans-2-Butene", "trans-2-Butene")
 ]
 
 
-def property_generator(selected_fluids , PropsSI):
-    # This function is used to generate the properties of the fluids
-    temperature = 25 + 273.15
-    pressure = 101325
-    
-    for fluid in selected_fluids:
+
+def get_props(fluid, temperature, pressure):
+    try:
+        h_liquid = PropsSI('H', 'T', temperature, 'Q', 0, fluid)
+        h_vapor = PropsSI('H', 'T', temperature, 'Q', 1, fluid)
+        latent_heat_vaporisation = (h_vapor - h_liquid) / 1000
+        specific_heat_capacity = PropsSI('C', 'T', temperature, 'P', pressure, fluid) / 1000
+        Density_L = PropsSI('D', 'T', temperature, 'Q', 0, fluid)
+        Density_G = PropsSI('D', 'T', temperature, 'Q', 1, fluid)
+        Evaporation_temp = PropsSI('T', 'P', pressure, 'Q', 0, fluid)
+        return [round(latent_heat_vaporisation,3), round(specific_heat_capacity,3), round(Density_L,3), round(Density_G,3), round(Evaporation_temp,3)]
+    except Exception:
+        # try lowercase fluid
         try:
-                h_liquid = PropsSI('H', 'T', temperature, 'Q', 0, fluid)
-                h_vapor = PropsSI('H', 'T', temperature, 'Q', 1, fluid)
-                latent_heat_vaporisation = h_vapor - h_liquid
-                specific_heat_capacity = PropsSI('C', 'T', temperature, 'P', pressure, fluid)
-                Density_L= PropsSI('D', 'T', temperature, 'Q', 0, fluid)
-                Density_G= PropsSI('D', 'T', temperature, 'Q', 1, fluid)
-                Evaporation_temp = PropsSI('T', 'P', pressure, 'Q', 0, fluid)
-                yield [latent_heat_vaporisation, specific_heat_capacity, Density_L, Density_G, Evaporation_temp]
-        except Exception as error:
-            print(f"Error retrieving properties for {fluid}: {error}")
-            yield [None, None, None, None, None]
+            fluid_lower = fluid.lower()
+            h_liquid = PropsSI('H', 'T', temperature, 'Q', 0, fluid_lower)
+            h_vapor = PropsSI('H', 'T', temperature, 'Q', 1, fluid_lower)
+            latent_heat_vaporisation = (h_vapor - h_liquid) / 1000
+            specific_heat_capacity = PropsSI('C', 'T', temperature, 'P', pressure, fluid_lower) / 1000
+            Density_L = PropsSI('D', 'T', temperature, 'Q', 0, fluid_lower)
+            Density_G = PropsSI('D', 'T', temperature, 'Q', 1, fluid_lower)
+            Evaporation_temp = PropsSI('T', 'P', pressure, 'Q', 0, fluid_lower)
+            return [round(latent_heat_vaporisation,3), round(specific_heat_capacity,3), round(Density_L,3), round(Density_G,3), round(Evaporation_temp,3)]
+        except Exception:
+            return [None]*5
+
+def property_generator(selected_fluids, PropsSI):
+    temperature = 300
+    pressure = 1000000
+    for fluid in selected_fluids:
+        props = get_props(fluid, temperature, pressure)
+        yield props
 
 if __name__ == "__main__":
     # Example usage

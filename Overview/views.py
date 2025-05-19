@@ -126,17 +126,30 @@ def comparison_table(request):
     # This function is used to create a comparison table for the fluids
     fluid_properties = []
     selected_fluids = []
+    human_name = []
+    flag = 0
     if request.method == 'POST':
-        selected_fluids = request.POST.getlist('fluids')
-        # for property in property_generator(selected_fluids, PropsSI):
-        #     fluid_properties.append(property)
-        selected_fluids = [x.upper() for x in selected_fluids]
-        for fluid in property_generator(selected_fluids, PropsSI):
-            fluid_properties.append(fluid)
+        selected_fluids = request.POST.getlist('fluids')#This gets the CoolProp Input from the Checkbox
+        
+        selected_fluids = [x.upper() for x in selected_fluids]#Most cool prop inputs are uppercase
+        try:
+            for alias, human in coolprop_fluids:# The check box only return the alias name, so we need to get the human name
+                
 
+                if (alias.upper() in selected_fluids): #This finds the alias in the selected fluids
+                    human_name.append(human)
+                    print(human)
+            
+            
+            for fluid in property_generator(selected_fluids, PropsSI):
+                fluid.insert(0, human_name[flag])#This adds the human name to the beginning of the fluid proprties list
+                flag += 1
+                fluid_properties.append(fluid)#This adds the fluid properties to the list
+        except Exception as error:
+            pass
+            
 
-    
-    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids, 'selected_fluids': selected_fluids, 'fluid_properties': fluid_properties})
+    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids, 'selected_fluids': selected_fluids, 'human_name': human_name, 'fluid_properties': fluid_properties})
 
 
 class ACCTView(TemplateView):

@@ -27,41 +27,46 @@
                     {% for fluid in fluids %}
                         
                             <label>
-                                <input type="checkbox" name="fluids" value="{{ fluid.0 }}">{{ fluid.1 }}
+                                <input type="checkbox" name="fluids" value="{{ fluid.0}}">{{ fluid.1 }}
                             </label>
                         
                     {% endfor %}
                 </div>
                 <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
             </form>
             
+            
+
+            <p><strong>Note:</strong> The values for when the Temperature is 300K and the pressure is 1 MPa</p>
             {% if selected_fluids %}
                 
                 <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Fluid Name</th>
-                            <th>Latent Heat of Vapourisation(J/kg)</th>
-                            <th>Specific Heat Capacity (J/kg . K)</th>
-                            <th>Density(Liquid) (kg/m³)</th>
-                            <th>Density(Gas) (kg/m³)</th>
-                            <th>Evaporation Temperature (K)</th>
-                            
-                        </tr>
-                    </thead>
+                <thead>
+                    <tr>
+                    <th>Fluid Name</th>
+                    <th>Latent Heat of Vapourisation(kJ/kg)</th>
+                    <th>Specific Heat Capacity (kJ/kg . K)</th>
+                    <th>Density(Liquid) (kg/m³)</th>
+                    <th>Density(Gas) (kg/m³)</th>
+                    <th>Evaporation Temperature (K)</th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                        {% for fluid in selected_fluids %}
-                            <tr>
-                                <td>{{ selected_fluids.0 }}</td>
-                                <td>{{ fluid.0 }}</td>
-                                <td>{{ fluid.1 }}</td>
-                                <td>{{ fluid.2 }}</td>
-                                <td>{{ fluid.3 }}</td>
-                                <td>{{ fluid.4 }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
+                <tbody>
+                    {% for property in fluid_properties %}
+                    <tr>
+                        
+                        <td>{{ property.0 }}</td>
+                        <td>{{ property.1 }}</td>
+                        <td>{{ property.2 }}</td>
+                        <td>{{ property.3 }}</td>
+                        <td>{{ property.4 }}</td>
+                        <td>{{ property.5 }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
                 </table>
             {% endif %}
             
