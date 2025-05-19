@@ -7,6 +7,6 @@
     padding: 5px;
     display: flex;              /* Use flex to center the chart inside */
     justify-content: center;   /* Horizontally center the chart */
-    
+    align-items: center;
 }
 

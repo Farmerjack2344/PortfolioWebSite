@@ -144,11 +144,11 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
 
     state_temperatures = [T1, T2, T2s, T3, T4, T5, T6,T1]
     state_entropies = [S1, S2, S2s, S3, S4, S5, S6,S1]
-
+    
     state_pressures = [P1, P2, P2s, P3, P4, P5, P5s, P6,P1]
     state_enthalpies = [H1, H2, H2s, H3, H4, H5, H5s, H6,H1]
 
-    CTE =  abs(Work_in-Work_out)/Heat_in
+    CTEs =  abs(Work_in-Work_out)/Heat_in
     #efficiency_actual = abs(Work_out)/Heat_in
     #efficiency_carnot = 1 - (T4/T6)
     #CTE = efficiency_actual/efficiency_carnot
@@ -172,7 +172,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
             S_vap.append(PropsSI('S','T',temperature,'Q',1,working_fluid))
         except Exception as error:
             print(error)
-            pass
+            
     S_liq_vap = [S_liq, S_vap]
 
     Pmin = PropsSI('pmin', working_fluid)
@@ -183,21 +183,20 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
 
     pressure_range = linspace(Pmin, Pmax, 300)
 
-    for pressure in temperature_range:
+    for pressure in pressure_range:
         try:
             H_liq.append(PropsSI('H', 'P', pressure, 'Q', 0, working_fluid))
             H_vap.append(PropsSI('H', 'P', pressure, 'Q', 1, working_fluid))
         except Exception as error:
             print(error)
-            pass
-
+           
 
     H_liq_vap = [H_liq, H_vap]
 
-    saturation_dome = [temperature_range, S_liq_vap, pressure_range,  H_liq_vap]
+    saturation_dome = [temperature_range, S_liq, S_vap, pressure_range,  H_liq, H_vap]
 
     output = {'Work_out': Work_out, 'Work_in':Work_in, 'Heat_out': Heat_out, 'state_entropies':state_entropies, 'state_temperatures':state_temperatures,'state_pressures': state_pressures,
-              'state_enthalpies': state_enthalpies,'CTE':CTE, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
+              'state_enthalpies': state_enthalpies,'CTE': CTEs, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
     return output
 
 # T_production = 165+273.15

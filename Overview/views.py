@@ -112,7 +112,6 @@ def plot_binary(request):
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], suerheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
-
             except Exception as error:
                 form.add_error(None, error)
 

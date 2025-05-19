@@ -30,7 +30,9 @@
                 <div id="tsPlot" style="width:100%; height: 100%;">
                     <script>
                         const Temperatures = {{ Temperatures | safe }}
+                        console.log(Temperatures)
                         const Entropies = {{ Entropies | safe }}
+                        console.log(Entropies)
                         const saturation_dome = {{ saturation_dome | safe }}
                         const temperature_range =  saturation_dome[0] 
                         const S_liq =  saturation_dome[1]

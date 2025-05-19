@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django import forms
 from django.db.models import FloatField
 from Overview.PowerFromUnderground.coolprop_fluids import coolprop_fluids
+coolprop_fluids = [(alias.upper(), human_name) for alias, human_name in coolprop_fluids]
+
 
 import CoolProp
 
@@ -21,7 +23,7 @@ class FlashInputForm(forms.Form):
 
 
 class BinaryInputForm(forms.Form):
-    working_fluid = forms.CharField(label="Working Fluid:", max_length=100)
+    working_fluid = forms.ChoiceField(choices=coolprop_fluids, label="Working Fluid:")
     mass_flow_rate = forms.FloatField(label="Mass Flow Rate of geo fluid (kg/s):")
     production_well_temperature = forms.FloatField(label="Temperature at the production well  (K):")
     injection_well_temperature = forms.FloatField(label="Temperature at the injection well (K):")
