@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from sympy.physics.units import temperature
+from django.http import JsonResponse
 
 from Overview.forms import FlashInputForm,BinaryInputForm
 from Overview.PowerFromUnderground.SimpleFlashCycle import FlashCycle
-from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary
+from Overview.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary,simple_binary_parametric
 from Overview.PowerFromUnderground.linspace import linspace
 from Overview.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 
@@ -95,9 +96,14 @@ def plot_binary(request):
         'state_pressures': [],
         'state_entropies': [],
         'state_temperatures' : [],
-        'saturation_dome': []
+        'saturation_dome': [],
+        'Work_out': 0,  
+        'Work_in': 0,   
+        'Heat_out': 0,
     }
-
+    para_work_out_array = []
+    T_range = []    
+    P_range = []
 
     if request.method == 'POST':
         form = BinaryInputForm(request.POST)
@@ -111,15 +117,47 @@ def plot_binary(request):
             condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
 
             try:
-                output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], suerheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
+                output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
+                                      suerheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
             except Exception as error:
                 form.add_error(None, error)
 
+            
 
     return render(request, 'Overview/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
                                                                    'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
-                                                               'saturation_dome': json.dumps(output['saturation_dome'])})
+                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
+                                                                 'Heat_out': output['Heat_out']})
 
+def load_parametric(request):
+    if request.method == 'GET':
+        working_fluid = request.GET.get('working_fluid')
+        m_dot_geo_fluid = request.GET.get('mass_flow_rate')
+        reservoir = [float(request.GET.get('production_well_temperature')), float(request.GET.get('injection_well_temperature'))]
+        superheat = request.GET.get('superheat')
+        turbine_in_pressure = request.GET.get('turbine_inlet_pressure')
+        condenser_out_temperature = request.GET.get('condenser_outlet_temperature')
+
+        para_work_out_array = []
+        T_range = []
+        P_range = []
+
+        try:
+            para_work_out_array = simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature, PropsSI)
+
+
+            return JsonResponse({
+                'para_work_out_array': para_work_out_array,
+                'T_range': T_range,
+                'P_range': P_range,
+            })
+            
+        except Exception as error:
+            print(error)#remove this line when done
+            return JsonResponse({'error': str(error)}, status=500)
+
+
+        return json.dumps(para_work_out_array)
 
 def comparison_table(request):
     # This function is used to create a comparison table for the fluids

@@ -73,7 +73,7 @@
               <div class=" jumbotron shadow PFUCycleInfo">
                   <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
                   <figure>
-                      <img class="figure" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
+                      <img class="figure img-fluid" src="{% static 'Overview/images/FlashCycleConfiguration.png' %}" width="600" height="600">
                       <figcaption class="text-sm text-gray-600 mt-2">Schematic for the flash Cycle used</figcaption>
                   </figure>
                   <p>
@@ -90,7 +90,7 @@
               <div class="jumbotron PFUCycleInfo shadow">
                     <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
                       <figure>
-                        <img class="figure" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
+                        <img class="figure img-fluid" src="{% static 'Overview/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
                         <figcaption class="text-sm text-gray-600 mt-2">Schematic for the Binary Cycle used</figcaption>
                       </figure>
                     <p>
@@ -99,11 +99,11 @@
                     </p>
 
                     <figure>
-                        <img class="figure" src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
+                        <img class="figure img-fluid" src="{% static 'Overview/images/BinaryBarchart.png' %}" width="1000" height="600">
                         <figcaption class="text-sm text-gray-600 mt-2">Bar chart of work output vs working fluid</figcaption>
                     </figure>
                     <figure>
-                        <img class="figure" src="{% static 'Overview/images/BinaryContour.png' %}" width="1000" height="600">
+                        <img class="figure img-fluid" src="{% static 'Overview/images/BinaryContour.png' %}" width="1000" height="600">
                         <figcaption class="text-sm text-gray-600 mt-2">This is a contour plot showing how the work done is affected  by the temperature of the geofluid and the injection wellhead vs the turbine inlet pressure</figcaption>
                     </figure>
                     <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
@@ -121,8 +121,8 @@
                     <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
 
 
-                      <figure>
-                          <img class="figure" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" width="600" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                      <figure class="w-full max-w-full overflow-x-auto">
+                          <img class="figure img-fluid w-full h-auto object-contain" src="{% static 'Overview/images/HybridFlashBinaryCycle.png' %}" alt="Hybrid Flash-Binary Cycle Configuration">
                           <figcaption class="text-sm text-gray-600 mt-2">
                             Schematic for the Hybrid Cycle used
                           </figcaption>
@@ -134,13 +134,13 @@
                     </p>
 
                     <figure>
-                          <img class="figure" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <img class="figure img-fluid" src="{% static 'Overview/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
                           <figcaption class="text-sm text-gray-600 mt-2">
                             Results of the simulation
                           </figcaption>
                       </figure>
                     <figure>
-                          <img class="figure" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <img class="figure img-fluid" src="{% static 'Overview/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
                           <figcaption class="text-sm text-gray-600 mt-2">
                             Results of the simulation Parametric study
                           </figcaption>

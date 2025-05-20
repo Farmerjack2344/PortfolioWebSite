@@ -1,4 +1,5 @@
 from Overview.PowerFromUnderground.linspace import linspace
+import asyncio
 
 
 def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
@@ -199,6 +200,31 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
               'state_enthalpies': state_enthalpies,'CTE': CTEs, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
     return output
 
+def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
+    
+    T_min = PropsSI('Tmin', 'WATER')
+    T_max = 0.75 * reservoir[0] 
+
+    T_range = linspace(T_min, T_max, 300)
+
+    P_min = PropsSI('pmin', working_fluid)
+    P_max = PropsSI('pcrit', working_fluid)
+
+    P_range = linspace(P_min, P_max, 50)#Make this 300
+    
+    para_work_out_array = []
+
+    for pressure in P_range:
+        for temperature in T_range:
+            try:
+                output = SimpleBinary(working_fluid, m_dot_geo_fluid, [temperature, reservoir[1]], superheat, pressure, condenser_out_temperature, PropsSI)
+                para_work_out_array.append(output["Work_out"] * -1)
+            except Exception as error:
+                continue
+
+    return para_work_out_array, T_range, P_range           
+
+# Example usage:
 # T_production = 165+273.15
 # working_fluid = "R601"
 # Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource = SimpleBinary(working_fluid, 442.5, [T_production, 136+273.15] , 0, 15.5e5, 317.885)

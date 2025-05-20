@@ -24,10 +24,15 @@
             <p class="important_text">The working fluid for a Binary Cycle is a very important decider in its performance.
             There are alot of fluids that are available in CoolProp. To help in the selection I made a table that helps 
             in the comparison of the fluids.<br>You can find it here: <a href="{% url 'overview:comparison_table' %}">Working Fluid Comparison</a>
+            <br>
+            <br>
+            <strong>Note: This may take a while to load depending on the size of the data.</strong>
             </p>
+
+
             <div class="PFUPlot">
 
-                <div id="tsPlot" style="width:100%; height: 100%;">
+                <div id="tsPlot"">
                     <script>
                         const Temperatures = {{ Temperatures | safe }}
                         console.log(Temperatures)
@@ -83,7 +88,7 @@
 
             <div class="PFUPlot">
 
-                <div id="phPlot" style="width:100%; height: 100%;">
+                <div id="phPlot">
 
                     <script>    
                         const Pressures = {{ Pressures | safe }}
@@ -131,6 +136,40 @@
                         responsive: true,
                         displayModeBar: true,
                         useResizeHandler: true
+                        })
+                    </script>
+                </div>
+
+            </div>
+
+            <div class="PFUPlot">
+
+                <div id="WorkContourPlot">
+
+                    <script>
+                        const para_work_out_array = {{ para_work_out_array | safe }}
+                        const T_range = {{ T_range | safe }}
+                        const P_range = {{ P_range | safe }}
+
+                        const workContourData = [{
+                            x: T_range,
+                            y: P_range,
+                            z: para_work_out_array,
+                            type: 'contour',
+                            colorscale: 'Plasma',
+                            colorbar: { title: 'Work Output (W)' }
+                        }];
+
+                        Plotly.newPlot('WorkContourPlot', workContourData, {
+                            title: 'Work Output Vs. Injection Well Temperature and Turbine Inlet Pressure Contour Plot',
+                            xaxis: { title: 'Injection Well Temperature (K)' },
+                            yaxis: { title: 'Turbine Inlet Pressure (Pa)' },
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                            responsive: true,
+                            displayModeBar: true,
+                            useResizeHandler: true
                         })
                     </script>
                 </div>
