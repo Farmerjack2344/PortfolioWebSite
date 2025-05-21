@@ -204,20 +204,22 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
     
     T_min = PropsSI('Tmin', 'WATER')
     T_max = 0.75 * reservoir[0] 
+    interval = 20
 
-    T_range = linspace(T_min, T_max, 300)
+
+    T_range = linspace(T_min, T_max, interval)
 
     P_min = PropsSI('pmin', working_fluid)
     P_max = PropsSI('pcrit', working_fluid)
 
-    P_range = linspace(P_min, P_max, 50)#Make this 300
-    
+    P_range = linspace(P_min, P_max, interval)
+
     para_work_out_array = []
 
     for pressure in P_range:
         for temperature in T_range:
             try:
-                output = SimpleBinary(working_fluid, m_dot_geo_fluid, [temperature, reservoir[1]], superheat, pressure, condenser_out_temperature, PropsSI)
+                output = SimpleBinary(working_fluid, m_dot_geo_fluid, [reservoir[0], temperature], superheat, pressure, condenser_out_temperature, PropsSI)
                 para_work_out_array.append(output["Work_out"] * -1)
             except Exception as error:
                 continue
