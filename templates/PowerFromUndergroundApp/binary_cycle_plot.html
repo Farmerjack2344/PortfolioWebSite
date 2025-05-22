@@ -157,7 +157,16 @@
                             z: para_work_out_array,
                             type: 'contour',
                             colorscale: 'Viridis',
-                            colorbar: { title: 'Work Output (W)' }
+                            colorbar: { title: 'Work Output (W)' },
+                            contours: {
+                                coloring: 'heatmap',
+                                showlabels: true,
+                                labelfont: {
+                                    family: 'Raleway',
+                                    size: 12,
+                                    color: 'white'
+                                }
+                            },
                         }];
 
                         Plotly.newPlot('WorkContourPlot', workContourData, {

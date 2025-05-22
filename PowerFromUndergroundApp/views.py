@@ -6,6 +6,7 @@ from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
 from PowerFromUndergroundApp.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 from django.http import JsonResponse
 import json
+import numpy as np
 from CoolProp.CoolProp import PropsSI # type: ignore
 from django.views.generic import TemplateView
 
@@ -80,9 +81,11 @@ def plot_binary(request):
         'Work_in': 0,   
         'Heat_out': 0,
     }
-    para_work_out_array = []
-    T_range = []    
-    P_range = []
+    para_work_out_array = np.array([])
+    T_range = np.array([])
+    P_range = np.array([])
+
+    data_points = 20
 
     if request.method == 'POST':
         form = BinaryInputForm(request.POST)
@@ -94,9 +97,10 @@ def plot_binary(request):
             superheat = form.cleaned_data['superheat']
             turbine_inlet_pressure =  form.cleaned_data['turbine_inlet_pressure']
             condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
-            para_work_out_array = []
-            T_range = []
-            P_range = []
+            data_points = form.cleaned_data['data_points']
+            para_work_out_array = np.array([])
+            T_range = np.array([])
+            P_range = np.array([])
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
@@ -105,20 +109,18 @@ def plot_binary(request):
                 form.add_error(None, error)
 
             try:
-                para_work_out_array, T_range, P_range = simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, PropsSI)
+                para_work_out_array, T_range, P_range = simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI)
 
             except Exception as error:
-                print(para_work_out_array)
-                print(T_range)  
-                print(P_range)
+               
                 form.add_error(None, error)
             
 
     return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
                                                                    'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
                                                                'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
-                                                                 'Heat_out': output['Heat_out'], 'para_work_out_array': json.dumps(para_work_out_array), 'T_range': json.dumps(T_range),
-                                                                'P_range': json.dumps(P_range),
+                                                                 'Heat_out': output['Heat_out'], 'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
+                                                                'P_range': P_range.tolist()
             })
 
 

@@ -1,5 +1,5 @@
+import numpy as np
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
-import asyncio
 
 
 def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
@@ -210,28 +210,32 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
               'state_enthalpies': state_enthalpies,'CTE': CTEs, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
     return output
 
-def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
-    
+
+def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,data_points,PropsSI):
+    interval = data_points
+    #T_production = reservoir[0]
+    #T_injection_well = reservoir[1]
+
     T_min = PropsSI('Tmin', 'WATER')
-    T_max = 0.75 * reservoir[0] 
-    interval = 20
-
-
-    T_range = linspace(T_min, T_max, interval)
+    T_max = 0.8 * reservoir[0]
+    
 
     P_min = PropsSI('pmin', working_fluid)
-    P_max = PropsSI('pcrit', working_fluid)
+    P_max = 0.9 * PropsSI('pcrit', working_fluid)
 
-    P_range = linspace(P_min, P_max, interval)
+    T_range = np.linspace(T_min, T_max, interval)
+    P_range = np.linspace(P_min, P_max, interval)
 
-    para_work_out_array = []
+    para_work_out_array = np.full((interval, interval), np.nan)
 
-    for temperature in T_range:
-        for pressure in P_range:
+    for i, temperature in enumerate(T_range):
+        for j, pressure in enumerate(P_range):
             try:
                 output = SimpleBinary(working_fluid, m_dot_geo_fluid, [reservoir[0], temperature], superheat, pressure, condenser_out_temperature, PropsSI)
-                para_work_out_array.append(output["Work_out"] - output["Work_in"])
+                para_work_out_array[j, i] = (output["Work_out"] - output["Work_in"])#swap i and j because of how plotly percives the data
             except Exception as error:
+                #print(error)
+                para_work_out_array[j, i] = 0  # Assign 0 or another default value instead of np.nan 
                 continue
 
     return para_work_out_array, T_range, P_range           

@@ -30,6 +30,7 @@ class BinaryInputForm(forms.Form):
     superheat = forms.FloatField(label="Superheat (K):")
     turbine_inlet_pressure = forms.FloatField(label="Turbine Inlet Pressure (Pa):")
     condenser_outlet_temperature = forms.FloatField(label="Condenser Outlet Temperature (K):")
+    data_points = forms.IntegerField(label="Number of Data Points(For the contours):", initial=20)
 
 
 
