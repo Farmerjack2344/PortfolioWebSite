@@ -123,17 +123,27 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
 
 
 
-    #Stage 5-6 (Heat Exchanger)
-
-    P6 = P1
-    T6 = T1
-    H6 = PropsSI('H', 'P', P6, 'Q', 0, working_fluid)
-    S6 = PropsSI('S', 'T', T6, 'Q', 0, working_fluid)
+    
 
 
     #Outputs
     cp = PropsSI('C', 'T',T5,'P',P5,'Water')#4184
+    cpw = PropsSI('C', 'T',T5,'P',P5,working_fluid)#4184
     m_dot_working = (m_dot_geo_fluid*cp*(T_production-T_injection_well))/(H1-H5)
+
+    #Stage 5-6 (Heat Exchanger)
+
+    
+    H6 =  ((m_dot_geo_fluid*cpw*(T_production-T_injection_well))/(m_dot_working)) + H5
+
+    H6l = PropsSI('H', 'T', T1, 'Q', 0, working_fluid)
+    H6g = PropsSI('H', 'T', T1, 'Q', 1, working_fluid)
+
+    Q6 = (H6-H4)/(H1-H4)
+    P6 = P1
+    T6 = PropsSI('T', 'H', H6, 'P', P6, working_fluid)
+    S6 = PropsSI('S', 'H', H6, 'P', P6, working_fluid)
+                 
 
     Work_out = m_dot_working * (H1-H2)
 
@@ -216,11 +226,11 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
 
     para_work_out_array = []
 
-    for pressure in P_range:
-        for temperature in T_range:
+    for temperature in T_range:
+        for pressure in P_range:
             try:
                 output = SimpleBinary(working_fluid, m_dot_geo_fluid, [reservoir[0], temperature], superheat, pressure, condenser_out_temperature, PropsSI)
-                para_work_out_array.append(output["Work_out"] * -1)
+                para_work_out_array.append(output["Work_out"] - output["Work_in"])
             except Exception as error:
                 continue
 
