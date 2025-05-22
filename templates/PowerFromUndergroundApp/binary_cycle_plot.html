@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet"  type="text/css" href="{% static 'Overview/css/PlotStyle.css' %}">
+<link rel="stylesheet"  type="text/css" href="{% static 'PowerFromUndergroundApp/css/PlotStyle.css' %}">
 
 {% endblock %}
 
@@ -23,7 +23,7 @@
             <br>
             <p class="important_text">The working fluid for a Binary Cycle is a very important decider in its performance.
             There are alot of fluids that are available in CoolProp. To help in the selection I made a table that helps 
-            in the comparison of the fluids.<br>You can find it here: <a href="{% url 'overview:comparison_table' %}">Working Fluid Comparison</a>
+            in the comparison of the fluids.<br>You can find it here: <a href="{% url 'pfu:comparison_table' %}">Working Fluid Comparison</a>
             <br>
             <br>
             <strong>Note: This may take a while to load depending on the size of the data.</strong>

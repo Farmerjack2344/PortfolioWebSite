@@ -5,12 +5,14 @@ from PowerFromUndergroundApp.PowerFromUnderground.SimpleBinaryCycle import Simpl
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
 from PowerFromUndergroundApp.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 from django.http import JsonResponse
+import json
+from CoolProp.CoolProp import PropsSI # type: ignore
 from django.views.generic import TemplateView
 
 # Create your views here.
 
 class PFUView(TemplateView):
-    template_name = 'Overview/PowerFromUnderground.html'
+    template_name = 'PowerFromUndergroundApp/PowerFromUnderground.html'
 
 def plot_flash(request):
     form = FlashInputForm()
@@ -55,7 +57,7 @@ def plot_flash(request):
             except Exception as error:
                 form.add_error(None, error)
 
-    return render(request, 'Overview/flash_cycle_plot.html', {
+    return render(request, 'PowerFromUndergroundApp/flash_cycle_plot.html', {
         'form': form, 'pressure_change':dP,
         'Entropies': json.dumps(output["state_entropies"]),
         'Temperatures': json.dumps(output["state_temperatures"]),
@@ -112,7 +114,7 @@ def plot_binary(request):
                 form.add_error(None, error)
             
 
-    return render(request, 'Overview/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
+    return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
                                                                    'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
                                                                'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                  'Heat_out': output['Heat_out'], 'para_work_out_array': json.dumps(para_work_out_array), 'T_range': json.dumps(T_range),
@@ -148,5 +150,5 @@ def comparison_table(request):
             pass
             
 
-    return render(request, 'Overview/WorkingFluid.html', {'fluids': coolprop_fluids, 'selected_fluids': selected_fluids, 'human_name': human_name, 'fluid_properties': fluid_properties})
+    return render(request, 'PowerFromUndergroundApp/WorkingFluid.html', {'fluids': coolprop_fluids, 'selected_fluids': selected_fluids, 'human_name': human_name, 'fluid_properties': fluid_properties})
 

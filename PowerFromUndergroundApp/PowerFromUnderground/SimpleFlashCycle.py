@@ -1,5 +1,6 @@
 from CoolProp.CoolProp import PropsSI
-from Overview.PowerFromUnderground.linspace import linspace
+from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
+
 def FlashCycle(m_dot, init_temp, final_temp, init_pressure, pressure_change,PropsSI, linspace):
 
     #1 - 2 Flashing
