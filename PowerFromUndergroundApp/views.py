@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from PowerFromUndergroundApp.forms import FlashInputForm,BinaryInputForm
 from PowerFromUndergroundApp.PowerFromUnderground.SimpleFlashCycle import FlashCycle
-from PowerFromUndergroundApp.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary,simple_binary_parametric
+from PowerFromUndergroundApp.PowerFromUnderground.SimpleBinaryCycle import SimpleBinary, simple_binary_parametric, SimpleBinary, SimpleBinaryGenerator
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
 from PowerFromUndergroundApp.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 from django.http import JsonResponse
@@ -108,6 +108,8 @@ def plot_binary(request):
             P_range = np.array([])
             HeatSinkSource = []
 
+            working_fluid_work_outputs = []
+
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
                                       superheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
@@ -129,15 +131,13 @@ def plot_binary(request):
                 selected_fluids = request.POST.getlist('fluids')#This gets the CoolProp Input from the Checkbox
         
                 selected_fluids = [x.upper() for x in selected_fluids]#Most cool prop inputs are uppercase
-                
-                for alias, human in coolprop_fluids:# The check box only return the alias name, so we need to get the human name
-                    
+                for selected_fluid in selected_fluids:
+                    for working_fluid_work_output in SimpleBinaryGenerator(selected_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI):
+                        working_fluid_work_outputs.append((working_fluid_work_output))
 
-                    if (alias.upper() in selected_fluids): #This finds the alias in the selected fluids
-                        human_name.append(human)
-                        print(human)
+                    
                 
-                
+                selected_fluids = [x.lower() for x in selected_fluids]
                 
 
             except Exception as error:
@@ -152,7 +152,7 @@ def plot_binary(request):
                                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                               'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
                                                                               'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids
+                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': working_fluid_work_outputs, 'selected_fluids': selected_fluids,
                                                                               })
 
 
