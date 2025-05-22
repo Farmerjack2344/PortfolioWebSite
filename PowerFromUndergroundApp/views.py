@@ -88,6 +88,7 @@ def plot_binary(request):
     fluid_properties = []
     selected_fluids = []
     human_name = []
+    working_fluid_work_outputs = []
 
     data_points = 20
 
@@ -108,7 +109,7 @@ def plot_binary(request):
             P_range = np.array([])
             HeatSinkSource = []
 
-            working_fluid_work_outputs = []
+            
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
@@ -152,7 +153,8 @@ def plot_binary(request):
                                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                               'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
                                                                               'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': working_fluid_work_outputs, 'selected_fluids': selected_fluids,
+                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': json.dumps(working_fluid_work_outputs),
+                                                                              'selected_fluids': json.dumps(selected_fluids)
                                                                               })
 
 

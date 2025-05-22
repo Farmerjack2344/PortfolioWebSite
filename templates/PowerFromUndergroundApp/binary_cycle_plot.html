@@ -258,8 +258,7 @@
                             </label>
                         {% endfor %}
                     </div>
-                    <input type="submit" value="Submit">
-                    <input type="reset" value="Reset">
+                    
                 </form>
             
             
@@ -267,7 +266,7 @@
 
             <script>
                 const labels = {{ selected_fluids | safe }}
-                const work_output = {{ working_fluid_work_outputs | safe }}
+                const values = {{ working_fluid_work_outputs | safe }}
                 const data = [{
                                 x: labels,
                                 y: values,
@@ -291,7 +290,7 @@
                                     zeroline: true
                                 }
                             };
-                Plotly.newPlot('bar-chart', data, layout);
+                Plotly.newPlot('barchart', data, layout);
             </script>
 
         </div>
