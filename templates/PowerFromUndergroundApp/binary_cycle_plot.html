@@ -45,11 +45,11 @@
                         
 
                         const HeatSinkSource = {{ HeatSinkSource | safe }}
-                        const HeatSinkT =  [HeatSinkSource[1], HeatSinkSource[3]]
+                        const HeatSourceT =  [HeatSinkSource[1], HeatSinkSource[3]]
                         const HeatSinkSourceS = [HeatSinkSource[0], HeatSinkSource[2]]
 
 
-                        const HeatSourceT =  [HeatSinkSource[5], HeatSinkSource[7]]
+                        const HeatSinkT =  [HeatSinkSource[5], HeatSinkSource[7]]
 
                         const tsData = [{
                             x: Entropies,
@@ -64,13 +64,13 @@
 
                             {x:HeatSinkSourceS,
                             y: HeatSinkT,
-                            mode: 'markers+text',
+                            mode: 'markers+lines',
                             name: 'Heat Sink',
                             marker: { color: 'blue' }},
 
                             {x:HeatSinkSourceS,
                             y: HeatSourceT,
-                            mode: 'markers+text',
+                            mode: 'markers+lines',
                             name: 'Heat Source',
                             marker: { color: 'red' }},
 
@@ -106,9 +106,22 @@
                         })
                     </script>
                 </div>
-
+                
             </div>
-
+            <p>This is the T-s Diagram of the Binary cycle based on the input that you have provided.
+                <ul>
+                    <li>1: Working Fluid at the turbine inlet</li>
+                    <li>2: Working Fluid at the turbine outlet and condenser inlet</li>
+                    <li>2s: Working Fluid at the end of isentropic expansion</li>
+                    <li>3: Working Fluid at the condenser outlet</li>
+                    <li>4: Working Fluid at the pump inlet</li>
+                    <li>5: Working Fluid at the pump outlet/ heat exchanger inlet</li>
+                    <li>6: Working Fluid in the heat exchanger becoming vapour</li>
+                    
+                </ul>
+                When all the point of the cycle are within the heat sink and source lines, the cycle is confirmed
+                to be a valid cycle. The cycle is valid if the working fluid is in the liquid phase at the pump inlet.
+                </p>
 
             <div class="PFUPlot container">
 
@@ -163,9 +176,21 @@
                         })
                     </script>
                 </div>
+                
 
             </div>
-
+            <p>
+                This is the Pressure - enthalpy diagram of the Binary cycle based on the input that you have provided.
+                This diagram shows the same states shown in the T-s Daigarm except it is the pressure and enthalpy. This
+                plot is important because it shows another view of the cycle.
+                <br>
+                For example while developing the cycle and plotting I would set point 67 on the T-s Diagram to be a Saturated
+                vapour and then show the vapour heating to go to the inlewt of the turbine. This was an in accurate assumption.
+                I realised this when I saw the P-h diagram and saw that I had enough information to not make that assumtpion. Now 
+                the 6<sup>th</sup> point is shown accurately. This was important because using the previous assumption would
+                sometimes show that the cycle was not valid when it was. For example when using the Octane and Decane fluids.
+                <br>
+            </p>
             <div class="PFUPlot container"> 
 
                 <div id="WorkContourPlot">
@@ -207,6 +232,15 @@
                         })
                     </script>
                 </div>
+                <p>
+                    This plot shows how different combinations of turbinew inlet pressure and injeciton well temperature 
+                    affect the work output of the cycle. The contour lines show the work output of the cycle. The color
+                    of the contour lines show the work output of the cycle. 
+
+                    <br>
+                    The highest outputs happen the larger the difference between the production well and the Injection well
+                    temperatures(When the injection well is at a lower temperature). 
+                </p>
 
             </div>
         </div>
