@@ -80,6 +80,7 @@ def plot_binary(request):
         'Work_out': 0,  
         'Work_in': 0,   
         'Heat_out': 0,
+        'HeatSinkSource': [],
     }
     para_work_out_array = np.array([])
     T_range = np.array([])
@@ -98,9 +99,11 @@ def plot_binary(request):
             turbine_inlet_pressure =  form.cleaned_data['turbine_inlet_pressure']
             condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
             data_points = form.cleaned_data['data_points']
+
             para_work_out_array = np.array([])
             T_range = np.array([])
             P_range = np.array([])
+            HeatSinkSource = []
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
@@ -116,12 +119,14 @@ def plot_binary(request):
                 form.add_error(None, error)
             
 
-    return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
-                                                                   'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
-                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
-                                                                 'Heat_out': output['Heat_out'], 'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                'P_range': P_range.tolist()
-            })
+    return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 
+                                                                              'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
+                                                                              'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
+                                                                              'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
+                                                                              'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
+                                                                              'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
+                                                                              'P_range': P_range.tolist()
+                                                                              })
 
 
 

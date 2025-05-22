@@ -26,7 +26,7 @@
             in the comparison of the fluids.<br>You can find it here: <a href="{% url 'pfu:comparison_table' %}">Working Fluid Comparison</a>
             <br>
             <br>
-            <strong>Note: This may take a while to load depending on the size of the data.</strong>
+            <strong>Note: This may take a while to load depending on the number of data points.</strong>
             </p>
 
 
@@ -43,6 +43,14 @@
                         const S_liq =  saturation_dome[1]
                         const S_vap =  saturation_dome[2]
                         
+
+                        const HeatSinkSource = {{ HeatSinkSource | safe }}
+                        const HeatSinkT =  [HeatSinkSource[1], HeatSinkSource[3]]
+                        const HeatSinkSourceS = [HeatSinkSource[0], HeatSinkSource[2]]
+
+
+                        const HeatSourceT =  [HeatSinkSource[5], HeatSinkSource[7]]
+
                         const tsData = [{
                             x: Entropies,
                             y: Temperatures,
@@ -53,6 +61,19 @@
                             textposition: 'bottom right',
                             
                             },
+
+                            {x:HeatSinkSourceS,
+                            y: HeatSinkT,
+                            mode: 'markers+text',
+                            name: 'Heat Sink',
+                            marker: { color: 'blue' }},
+
+                            {x:HeatSinkSourceS,
+                            y: HeatSourceT,
+                            mode: 'markers+text',
+                            name: 'Heat Source',
+                            marker: { color: 'red' }},
+
                             {
                             x: S_liq,
                             y: temperature_range,   
@@ -66,10 +87,13 @@
                             mode: 'lines',
                             name: 'Saturated Vapor',
                             line: { color: 'red', dash: 'dot' }
-                            }]
+                            },
+                            
+                            
+                            ]
 
                         Plotly.newPlot('tsPlot', tsData, {
-                            title: 'T–s Diagram of Flash Cycle',
+                            title: 'T–s Diagram of Binary Cycle',
                             xaxis: { title: 'Entropy (J/kg·K)' },
                             yaxis: { title: 'Temperature (K)' },
                             
@@ -126,7 +150,7 @@
                             ];
 
                         Plotly.newPlot('phPlot', phData, {
-                            title: 'P-h Diagram of Flash Cycle',
+                            title: 'P-h Diagram of Binary Cycle',
                             xaxis: { title: 'Enthalpy (J/kg)' },
                             yaxis: { title: 'Pressure (Pa)' },
                             
@@ -177,6 +201,7 @@
                         },
                         {
                             responsive: true,
+                            autosize: true,
                             displayModeBar: true,
                             useResizeHandler: true
                         })
