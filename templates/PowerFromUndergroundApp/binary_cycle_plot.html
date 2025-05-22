@@ -243,6 +243,25 @@
                 </p>
 
             </div>
+
+            <div>
+                    <form method="POST">
+                    {% csrf_token %}
+                    <p>Select the fluids you want to compare:</p>
+                    <div class="fluid-list checkbox-grid">
+                        {% for fluid in fluids %}
+                            <label>
+                                <input type="checkbox" name="fluids" value="{{ fluid.0}}">{{ fluid.1 }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Reset">
+                </form>
+            
+            
+            </div>
+
         </div>
 
     </div>

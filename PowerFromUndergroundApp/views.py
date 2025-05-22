@@ -125,7 +125,7 @@ def plot_binary(request):
                                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                               'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
                                                                               'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                              'P_range': P_range.tolist()
+                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids
                                                                               })
 
 
