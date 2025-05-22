@@ -1,4 +1,4 @@
-from Overview.PowerFromUnderground.linspace import linspace
+from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
 import asyncio
 
 
