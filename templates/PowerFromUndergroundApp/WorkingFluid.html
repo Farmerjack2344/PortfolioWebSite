@@ -22,7 +22,7 @@
 
             <form method="POST">
                 {% csrf_token %}
-                <p>Select the fluids you want to compare:</p>
+                <h2>Select the fluids you want to compare:</h2>
                 <div class="fluid-list checkbox-grid">
                     {% for fluid in fluids %}
                         

@@ -232,8 +232,12 @@
                         })
                     </script>
                 </div>
-                <p>
-                    This plot shows how different combinations of turbinew inlet pressure and injeciton well temperature 
+                
+
+            </div>
+
+            <p>
+                    This plot shows how different combinations of turbine inlet pressure and injeciton well temperature 
                     affect the work output of the cycle. The contour lines show the work output of the cycle. The color
                     of the contour lines show the work output of the cycle. 
 
@@ -242,12 +246,11 @@
                     temperatures(When the injection well is at a lower temperature). 
                 </p>
 
-            </div>
 
             <div>
                     <form method="POST">
                     {% csrf_token %}
-                    <p>Select the fluids you want to compare:</p>
+                    <h2>Select the fluids you want to compare:</h2>
                     <div class="fluid-list checkbox-grid">
                         {% for fluid in fluids %}
                             <label>

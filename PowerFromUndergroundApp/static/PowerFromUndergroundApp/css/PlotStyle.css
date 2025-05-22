@@ -24,3 +24,9 @@
     width: 100%;               /* Make sure the chart takes the full width of the container */
     height: 100%;              /* Make sure the chart takes the full height of the container */
 }
+
+.checkbox-grid{
+                    display: grid;
+                    grid-template-columns: repeat(6, 1fr);
+                    gap: 10px;
+                }

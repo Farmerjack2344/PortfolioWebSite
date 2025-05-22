@@ -85,6 +85,9 @@ def plot_binary(request):
     para_work_out_array = np.array([])
     T_range = np.array([])
     P_range = np.array([])
+    fluid_properties = []
+    selected_fluids = []
+    human_name = []
 
     data_points = 20
 
@@ -112,11 +115,35 @@ def plot_binary(request):
                 form.add_error(None, error)
 
             try:
-                para_work_out_array, T_range, P_range = simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI)
-
+                
+                for j, i, temperature, pressure, net_work in simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI):
+                    # Process each result as it is generated
+                    para_work_out_array = np.append(para_work_out_array, net_work)
+                    T_range = np.append(T_range, temperature)
+                    P_range = np.append(P_range, pressure)
             except Exception as error:
                
                 form.add_error(None, error)
+
+            try:
+                selected_fluids = request.POST.getlist('fluids')#This gets the CoolProp Input from the Checkbox
+        
+                selected_fluids = [x.upper() for x in selected_fluids]#Most cool prop inputs are uppercase
+                
+                for alias, human in coolprop_fluids:# The check box only return the alias name, so we need to get the human name
+                    
+
+                    if (alias.upper() in selected_fluids): #This finds the alias in the selected fluids
+                        human_name.append(human)
+                        print(human)
+                
+                
+                
+
+            except Exception as error:
+                form.add_error(None, error)
+                
+            
             
 
     return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 

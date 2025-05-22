@@ -75,14 +75,8 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     T2s = PropsSI('T', 'S', S2s, 'P', P2s, working_fluid)
 
     H2 = H1 + Turbine_efficiency*(H2s - H1)
-    S2 = PropsSI('S', 'H', H2, 'P', P2, working_fluid)
-    H2a = v1 * (P2 - P1) + H1 #Assuming the fluid is incompressible
-
+    S2 = PropsSI('S', 'H', H2, 'P', P2, working_fluid)    
     T2 = PropsSI('T', 'S', S2, 'P', P2, working_fluid)
-
-
-
-
 
     #Stage 3-4 (Condenser)
 
@@ -91,7 +85,6 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     P3 = P2
     H3 = PropsSI('H', 'T', T3, 'Q', 1, working_fluid) #H3<H2
     S3 = PropsSI('S', 'T', T3, 'Q', 1, working_fluid)
-
 
 
     T4 = T3#Wastes space but, for my readability it is necessary
@@ -105,9 +98,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     P4 = PropsSI('P', 'T', T4, 'Q', 0, working_fluid)
     H4 = PropsSI('H', 'T', T4, 'Q', 0, working_fluid)
     S4 = PropsSI('S', 'T', T4, 'Q', 0, working_fluid)
-    v4 = 1/(PropsSI('D', 'T', T4, 'Q', 0, working_fluid))
-
-
+    
 
     P5 = turbine_in_pressure
     if P5 < P4:
@@ -121,11 +112,6 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     T5 = PropsSI('T', 'P', P5, 'H', H5, working_fluid)
 
 
-
-
-    
-
-
     #Outputs
     cp = PropsSI('C', 'T',T5,'P',P5,'Water')#4184
     cpw = PropsSI('C', 'T',T5,'P',P5,working_fluid)#4184
@@ -136,10 +122,8 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     
     H6 =  ((m_dot_geo_fluid*cpw*(T_production-T_injection_well))/(m_dot_working)) + H5
 
-    H6l = PropsSI('H', 'T', T1, 'Q', 0, working_fluid)
-    H6g = PropsSI('H', 'T', T1, 'Q', 1, working_fluid)
-
-    Q6 = (H6-H4)/(H1-H4)
+    
+    
     P6 = P1
     T6 = PropsSI('T', 'H', H6, 'P', P6, working_fluid)
     S6 = PropsSI('S', 'H', H6, 'P', P6, working_fluid)
@@ -184,7 +168,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
         except Exception as error:
             print(error)
             
-    S_liq_vap = [S_liq, S_vap]
+    
 
     Pmin = PropsSI('pmin', working_fluid)
     Pmax = PropsSI('pcrit', working_fluid)
@@ -202,7 +186,7 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
             print(error)
            
 
-    H_liq_vap = [H_liq, H_vap]
+    
 
     saturation_dome = [temperature_range, S_liq, S_vap, pressure_range,  H_liq, H_vap]
 
@@ -216,29 +200,28 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
     #T_production = reservoir[0]
     #T_injection_well = reservoir[1]
 
+    interval = data_points
+
     T_min = PropsSI('Tmin', 'WATER')
     T_max = 0.8 * reservoir[0]
-    
-
     P_min = PropsSI('pmin', working_fluid)
     P_max = 0.9 * PropsSI('pcrit', working_fluid)
 
     T_range = np.linspace(T_min, T_max, interval)
     P_range = np.linspace(P_min, P_max, interval)
 
-    para_work_out_array = np.full((interval, interval), np.nan)
-
     for i, temperature in enumerate(T_range):
         for j, pressure in enumerate(P_range):
             try:
-                output = SimpleBinary(working_fluid, m_dot_geo_fluid, [reservoir[0], temperature], superheat, pressure, condenser_out_temperature, PropsSI)
-                para_work_out_array[j, i] = (output["Work_out"] - output["Work_in"])#swap i and j because of how plotly percives the data
+                output = SimpleBinary(
+                    working_fluid, m_dot_geo_fluid, [reservoir[0], temperature],
+                    superheat, pressure, condenser_out_temperature, PropsSI
+                )
+                net_work = output["Work_out"] - output["Work_in"]
             except Exception as error:
-                #print(error)
-                para_work_out_array[j, i] = 0  # Assign 0 or another default value instead of np.nan 
-                continue
-
-    return para_work_out_array, T_range, P_range           
+                net_work = 0  # Or np.nan if you prefer
+            # Yield indices and result for each parameter combination
+            yield (j, i, temperature, pressure, net_work)      
 
 # Example usage:
 # T_production = 165+273.15
@@ -248,3 +231,89 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
 # for i in [Work_out, Work_in, Heat_out, Heat_in, state_entropies, state_temperatures, state_pressures, state_enthalpies, CTE, HeatSinkSource]:
 #     print(i)
 #     print("\n"*5)
+
+
+def SimpleBinaryGenerator(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
+
+   
+
+    T_production = reservoir[0]
+    T_injection_well = reservoir[1]
+
+
+    Turbine_efficiency = 0.85#The isentropic efficiency is 85#
+    Compressor_efficiency = 0.75
+
+    #Stage 1-2 (Turbine)
+
+    P1 = turbine_in_pressure#MPa
+    T_evap = PropsSI('T', 'P', P1 ,'Q', 1 , working_fluid)
+    T1 = T_evap + superheat
+    S1 = PropsSI('S', 'Q', 1, 'P', P1, working_fluid)
+    H1 = PropsSI('H', 'Q', 1, 'P', P1, working_fluid)
+
+    P2 = PropsSI('P', 'T', condenser_out_temperature,'Q', 1, working_fluid)
+
+    P2s = P2
+    S2s = S1
+    H2s = PropsSI('H', 'S', S2s, 'P', P2s, working_fluid)
+    
+    H2 = H1 + Turbine_efficiency*(H2s - H1)
+    
+
+
+    #Stage 3-4 (Condenser)
+
+
+    T3 = condenser_out_temperature
+    P3 = P2
+    
+
+
+
+    T4 = T3#Wastes space but, for my readability it is necessary
+    P4 = P3
+    H4 = PropsSI('H', 'T', T4, 'Q', 0, working_fluid)
+    S4 = PropsSI('S', 'T', T4, 'Q', 0, working_fluid)
+
+    #Stage 4-5 (Compressor/Pump)
+
+
+    P4 = PropsSI('P', 'T', T4, 'Q', 0, working_fluid)
+    H4 = PropsSI('H', 'T', T4, 'Q', 0, working_fluid)
+    S4 = PropsSI('S', 'T', T4, 'Q', 0, working_fluid)
+    v4 = 1/(PropsSI('D', 'T', T4, 'Q', 0, working_fluid))
+
+
+
+    P5 = turbine_in_pressure
+    if P5 < P4:
+        raise Exception(f'The pressure(P5 = {P5:.3f}) should be higher than P4 ({P4:.3f})')
+
+    
+    H5s = PropsSI('H','P',P5,'S',S4,working_fluid)
+
+    H5 = H4 + (H5s-H4)*(1/Compressor_efficiency)
+    S5 = PropsSI('S', 'P', P5, 'H', H5, working_fluid)
+    T5 = PropsSI('T', 'P', P5, 'H', H5, working_fluid)
+
+
+
+
+    
+
+
+    #Outputs
+    cp = PropsSI('C', 'T',T5,'P',P5,'Water')#4184
+    m_dot_working = (m_dot_geo_fluid*cp*(T_production-T_injection_well))/(H1-H5)
+
+
+    
+
+
+    
+                 
+
+    Work_out = m_dot_working * (H1-H2)
+
+    yield Work_out
