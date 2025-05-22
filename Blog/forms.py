@@ -19,8 +19,9 @@ class PostForm(forms.ModelForm):
 
         # The classes allow to connect css classes to the entry fields
         widgets = {
-            'title': forms.TextInput(attrs={'class':'textinputclass'}),
-            'text' : forms.Textarea(attrs= {'class':'editable medium-editor-textarea postcontent'}),
+            'title': forms.TextInput(attrs={'class':'textinputclass form-control'}),
+            'text' : forms.Textarea(attrs= {'class':'editable form-control medium-editor-textarea postcontent',
+                                            'placeholder':'Write your post here', 'style':'min-height: 300px;'})
         }
 
 

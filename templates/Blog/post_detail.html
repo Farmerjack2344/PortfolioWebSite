@@ -38,7 +38,11 @@
             <a class="btn btn-primary" href="{% url 'blog:post_delete' pk=post.pk %}">
                 <i class="fa fa-times" aria-hidden="true"></i>
             </a>
+
         {% endif %}
+        <a href="{% url 'blog:post_list' %}" class="btn btn-secondary" style="margin-left: 10px;">
+            <i class="fa fa-home" aria-hidden="true"></i>
+        </a>
         <div style="text-align: right;">
             <a href="{% url 'blog:add_comment' pk=post.pk%}">Add Comment</a>
         </div>

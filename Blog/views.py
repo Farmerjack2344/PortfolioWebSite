@@ -3,7 +3,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.views.generic import TemplateView,ListView, DetailView, CreateView, UpdateView,DeleteView
 from Blog.models import Post,  Comments
 from Blog.forms import PostForm,CommentForm
@@ -94,22 +94,19 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     form_class = PostForm
 
-    def form_valid(self, form):
-        post = form.save()
-        venue.owner = self.request.user
-
-        if self.request.method == "POST":
-            pass
-
-        venue.save()
-        return super().form_valid(form)
+    
 
 class PostUpdateView(LoginRequiredMixin,UpdateView):
-    login_url = 'login/'
-    redirect_field_name = 'blog/post_detail.html'
+    model = Post
     form_class = PostForm
 
-    model = Post    #fields = ('title', 'text')
+    login_url = 'login/'    
+    
+    template_name = 'blog/post_edit.html'
+    redirect_field_name = 'blog/post_detail.html'
+
+    
+        #fields = ('title', 'text')
 
 class DraftListView(LoginRequiredMixin, ListView):
 

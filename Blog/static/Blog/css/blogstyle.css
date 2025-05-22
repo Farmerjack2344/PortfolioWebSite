@@ -108,3 +108,9 @@ body{
     background-color: #e0c6f4;
     border-radius: 10px;
     }
+
+textarea {
+    min-height: 300px; /* or whatever height you want */
+    resize: vertical;  /* optional: allows manual resizing */
+    background-color: aliceblue;
+}

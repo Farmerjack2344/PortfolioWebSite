@@ -1,6 +1,6 @@
 
 .PFUPlot{
-    width: 700px;               /* Make sure the container is large enough */
+    width: 70%;               /* Make sure the container is large enough */
     height: 600px;
     margin: 5px auto;          /* Center the whole div horizontally */
     border: 2px solid black;
