@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Overview',
     'Blog',
+    'PowerFromUndergroundApp'
 ]
 
 MIDDLEWARE = [
@@ -135,7 +136,8 @@ MEDIA_ROOT = BASE_DIR.joinpath('Blog/media')#os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 STATIC_ROOT =  BASE_DIR.joinpath('staticfiles')
 STATICFILES_DIRS = [BASE_DIR.joinpath('Overview/static'),
-                    BASE_DIR.joinpath('Blog/static')]
+                    BASE_DIR.joinpath('Blog/static'),
+                    BASE_DIR.joinpath('PowerFromUndergroundApp/static'),]
 
 
 

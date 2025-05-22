@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls import include
 from PowerFromUndergroundApp import views
 
-app_name = 'powerfromunderground'
+app_name = 'pfu'
 
 url_patterns = [
     path('', views.PFUView.as_view(), name='pfu'),

@@ -5,8 +5,13 @@ from PowerFromUndergroundApp.PowerFromUnderground.SimpleBinaryCycle import Simpl
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
 from PowerFromUndergroundApp.PowerFromUnderground.coolprop_fluids import coolprop_fluids, property_generator
 from django.http import JsonResponse
+from django.views.generic import TemplateView
 
 # Create your views here.
+
+class PFUView(TemplateView):
+    template_name = 'Overview/PowerFromUnderground.html'
+
 def plot_flash(request):
     form = FlashInputForm()
     para_work_out_array = []
