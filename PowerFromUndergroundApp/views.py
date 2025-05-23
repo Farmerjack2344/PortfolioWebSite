@@ -108,6 +108,7 @@ def plot_binary(request):
             T_range = np.array([])
             P_range = np.array([])
             HeatSinkSource = []
+            
 
             
 
@@ -133,28 +134,26 @@ def plot_binary(request):
         
                 selected_fluids = [x.upper() for x in selected_fluids]#Most cool prop inputs are uppercase
                 for selected_fluid in selected_fluids:
-                    for working_fluid_work_output in SimpleBinaryGenerator(selected_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI):
+                    
+                    for working_fluid_work_output in SimpleBinaryGenerator(selected_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, PropsSI):
                         working_fluid_work_outputs.append((working_fluid_work_output))
 
-                    
-                
                 selected_fluids = [x.lower() for x in selected_fluids]
-                
 
             except Exception as error:
                 form.add_error(None, error)
-                
-            
-            
+                print(selected_fluids)
+                print(working_fluid_work_outputs)
 
-    return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form, 
+
+    return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form,
                                                                               'Enthalpies': json.dumps(output['state_enthalpies']), 'Pressures': json.dumps(output['state_pressures']),
                                                                               'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
                                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                               'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
                                                                               'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': json.dumps(working_fluid_work_outputs),
-                                                                              'selected_fluids': json.dumps(selected_fluids)
+                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': working_fluid_work_outputs,
+                                                                              'selected_fluids': selected_fluids
                                                                               })
 
 

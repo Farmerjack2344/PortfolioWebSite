@@ -288,7 +288,7 @@ def SimpleBinaryGenerator(working_fluid, m_dot_geo_fluid, reservoir, superheat, 
 
     P5 = turbine_in_pressure
     if P5 < P4:
-        raise Exception(f'The pressure(P5 = {P5:.3f}) should be higher than P4 ({P4:.3f})')
+        raise Exception(f'The pressure(P5 = {P5:.3f}) should be higher than P4 ({P4:.3f})\nThe fluid Being used is {working_fluid}')
 
     
     H5s = PropsSI('H','P',P5,'S',S4,working_fluid)

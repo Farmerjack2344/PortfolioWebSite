@@ -17,6 +17,14 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}<!-- The form here comes from the overview view for the flash plot. DOnt be confused-->
+                <h2>Select fluids to compare for the bar chart:</h2>
+                        <div class="fluid-list checkbox-grid">
+                            {% for fluid in fluids %}
+                                <label>
+                                    <input type="checkbox" name="fluids" value="{{ fluid.0 }}">{{ fluid.1 }}
+                                </label>
+                            {% endfor %}
+                        </div>
                 <button type="submit">Run Simulation</button>
                 <button type="reset" style="Background: rgb(209, 122, 40);">Clear</button>
             </form>
@@ -247,51 +255,37 @@
                 </p>
 
 
-            <div>
-                    <form method="POST">
-                    {% csrf_token %}
-                    <h2>Select the fluids you want to compare:</h2>
-                    <div class="fluid-list checkbox-grid">
-                        {% for fluid in fluids %}
-                            <label>
-                                <input type="checkbox" name="fluids" value="{{ fluid.0}}">{{ fluid.1 }}
-                            </label>
-                        {% endfor %}
-                    </div>
-                    
-                </form>
             
-            
-            </div>
-
-            <script>
-                const labels = {{ selected_fluids | safe }}
-                const values = {{ working_fluid_work_outputs | safe }}
-                const data = [{
-                                x: labels,
-                                y: values,
-                                type: 'bar',
-                                marker: {
-                                    color: 'rgba(50, 171, 96, 0.7)',
-                                    line: {
-                                        color: 'rgba(50, 171, 96, 1.0)',
-                                        width: 1.5
+            <div id="barPlot">
+                <script>
+                    const labels = {{ selected_fluids | safe }}
+                    const values = {{ working_fluid_work_outputs | safe }}
+                    const data = [{
+                                    x: labels,
+                                    y: values,
+                                    type: 'bar',
+                                    marker: {
+                                        color: 'rgba(50, 171, 96, 0.7)',
+                                        line: {
+                                            color: 'rgba(50, 171, 96, 1.0)',
+                                            width: 1.5
+                                        }
                                     }
-                                }
-                            }];
+                                }];
 
-                            const layout = {
-                                title: 'Work Output by Working Fluid',
-                                xaxis: {
-                                    title: 'Working Fluid'
-                                },
-                                yaxis: {
-                                    title: 'Work Output (Joules)',
-                                    zeroline: true
-                                }
-                            };
-                Plotly.newPlot('barchart', data, layout);
-            </script>
+                                const layout = {
+                                    title: 'Work Output by Working Fluid',
+                                    xaxis: {
+                                        title: 'Working Fluid'
+                                    },
+                                    yaxis: {
+                                        title: 'Work Output (Joules)',
+                                        zeroline: true
+                                    }
+                                };
+                    Plotly.newPlot('barPlot', data, layout);
+                </script>
+            </div>
 
         </div>
 
