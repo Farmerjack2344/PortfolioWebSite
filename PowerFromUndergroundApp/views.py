@@ -146,8 +146,7 @@ def plot_binary(request):
 
             except Exception as error:
                 form.add_error(None, error)
-                print(selected_fluids)
-                print(working_fluid_work_outputs)
+                
 
 
     return render(request, 'PowerFromUndergroundApp/binary_cycle_plot.html', {'form':form,

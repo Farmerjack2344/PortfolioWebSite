@@ -260,12 +260,22 @@
                 <script>
                     const labels = {{ selected_fluids | safe }}
                     const values = {{ working_fluid_work_outputs | safe }}
+
+                    // Create an array of colors based on value
+                    const barColors = values.map(value => {
+                        if (value == 1) { // ← Set your threshold here
+                            return 'rgba(245, 24, 17, 0.8)';  
+                        } else {
+                            return 'rgba(50, 171, 96, 1.0)';  
+                        }
+                    });
+
                     const data = [{
                                     x: labels,
                                     y: values,
                                     type: 'bar',
                                     marker: {
-                                        color: 'rgba(50, 171, 96, 0.7)',
+                                        color: barColors,
                                         line: {
                                             color: 'rgba(50, 171, 96, 1.0)',
                                             width: 1.5
@@ -286,6 +296,11 @@
                     Plotly.newPlot('barPlot', data, layout);
                 </script>
             </div>
+            <div>
+                <p><strong>If a bar has the value of 1 it means that the cycle was not valid for that fluid.</strong></p>
+            </div>
+
+
 
         </div>
 
