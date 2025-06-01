@@ -134,10 +134,14 @@ def plot_binary(request):
         
                 selected_fluids = [x.upper() for x in selected_fluids]#Most cool prop inputs are uppercase
                 for selected_fluid in selected_fluids:
-                    
-                    for working_fluid_work_output in SimpleBinaryGenerator(selected_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, PropsSI):
-                        working_fluid_work_outputs.append((working_fluid_work_output))
-
+                
+                    try:
+                        for working_fluid_work_output in SimpleBinaryGenerator(selected_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, PropsSI):
+                            working_fluid_work_outputs.append((working_fluid_work_output))
+                    except Exception as error:
+                        form.add_error(None, error)
+                        working_fluid_work_outputs.append(1)
+                        continue
                 selected_fluids = [x.lower() for x in selected_fluids]
 
             except Exception as error:
