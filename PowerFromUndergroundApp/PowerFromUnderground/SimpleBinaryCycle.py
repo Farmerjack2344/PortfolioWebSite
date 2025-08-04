@@ -196,24 +196,27 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     return output
 
 def compute_output(args):
-    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature, PropsSI = args
+    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, condenser_out_temperature, PropsSI = args
+    try:
+        output = SimpleBinary(
+            working_fluid, m_dot_geo_fluid, [reservoir[0], temperature],
+            superheat, pressure, condenser_out_temperature, PropsSI
+        )
+        net_work = output["Work_out"] - output["Work_in"]
 
-    output = SimpleBinary(
-        working_fluid, m_dot_geo_fluid, [reservoir[0], reservoir[1]],
-        superheat, pressure, temperature, PropsSI
-    )
-    net_work = output["Work_out"] - output["Work_in"]
+        print(net_work)
+        return (i, j, temperature, pressure, net_work)
+    except:
+        return (i, j, temperature, pressure, 0)
 
-    return (j, i, temperature, pressure, net_work)
 
 def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,data_points,PropsSI):
     interval = data_points
     #T_production = reservoir[0]
     #T_injection_well = reservoir[1]
 
-    interval = data_points
 
-    T_min = 273.16
+    T_min = PropsSI('Tmin', working_fluid)
     T_max = 0.8 * reservoir[0]
     P_min = PropsSI('pmin', working_fluid)
     P_max = 0.9 * PropsSI('pcrit', working_fluid)
@@ -222,15 +225,18 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
     P_range = np.linspace(P_min, P_max, interval) #
     T_grid, P_grid = np.meshgrid(T_range, P_range, indexing='ij') #Takes two 1D arrays and makees a 2D array of the both of them
 
-
-    tasks = [(i, j, T_range[i], P_range[j], working_fluid, m_dot_geo_fluid, reservoir,
-        superheat, turbine_in_pressure, condenser_out_temperature, PropsSI) for i in range(interval) for j in range(interval)]
+    tasks = [
+        (i, j, T_range[i], P_range[j], working_fluid, m_dot_geo_fluid, reservoir,
+         superheat, condenser_out_temperature, PropsSI)
+        for i in range(interval) for j in range(interval)
+    ]
 
     # Packs the values into a tuple that looks like this
     # (index of pressure, index of temperature, temperature value, pressure value)
 
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
+
         for result in executor.map(compute_output, tasks):
             yield result
 
