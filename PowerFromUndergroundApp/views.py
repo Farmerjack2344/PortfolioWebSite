@@ -114,7 +114,7 @@ def plot_binary(request):
 
             try:
                 output = SimpleBinary(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], 
-                                      superheat, turbine_inlet_pressure, condenser_outlet_temperature,PropsSI)
+                                      superheat, turbine_inlet_pressure, condenser_outlet_temperature)
             except Exception as error:
                 form.add_error(None, error)
 
@@ -130,7 +130,7 @@ def plot_binary(request):
                 T_range = []
                 P_range = []
 
-                for i, j, temperature, pressure, net_work in simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, data_points,PropsSI):
+                for i, j, temperature, pressure, net_work in simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature, data_points):
 
                     para_work_out_array.append(net_work)
                     T_range.append(temperature)

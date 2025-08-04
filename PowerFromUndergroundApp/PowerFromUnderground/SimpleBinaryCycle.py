@@ -1,9 +1,10 @@
 import numpy as np
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
+from CoolProp.CoolProp import PropsSI
 import concurrent.futures
 
 
-def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
+def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature):
 
     """
     working_fluid:        string
@@ -196,11 +197,11 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     return output
 
 def compute_output(args):
-    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, condenser_out_temperature, PropsSI = args
+    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, condenser_out_temperature= args
     try:
         output = SimpleBinary(
             working_fluid, m_dot_geo_fluid, [reservoir[0], temperature],
-            superheat, pressure, condenser_out_temperature, PropsSI
+            superheat, pressure, condenser_out_temperature
         )
         net_work = output["Work_out"] - output["Work_in"]
 
@@ -210,14 +211,14 @@ def compute_output(args):
         return (i, j, temperature, pressure, 0)
 
 
-def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,data_points,PropsSI):
+def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,data_points):
     interval = data_points
     #T_production = reservoir[0]
     #T_injection_well = reservoir[1]
 
 
-    T_min = PropsSI('Tmin', working_fluid)
-    T_max = 0.8 * reservoir[0]
+    T_min = PropsSI('Tmin', 'WATER')
+    T_max = 0.8 * reservoir[1]
     P_min = PropsSI('pmin', working_fluid)
     P_max = 0.9 * PropsSI('pcrit', working_fluid)
 
@@ -227,7 +228,7 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
 
     tasks = [
         (i, j, T_range[i], P_range[j], working_fluid, m_dot_geo_fluid, reservoir,
-         superheat, condenser_out_temperature, PropsSI)
+         superheat, condenser_out_temperature)
         for i in range(interval) for j in range(interval)
     ]
 
