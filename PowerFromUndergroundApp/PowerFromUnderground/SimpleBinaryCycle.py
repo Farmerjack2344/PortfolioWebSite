@@ -1,5 +1,6 @@
 import numpy as np
 from PowerFromUndergroundApp.PowerFromUnderground.linspace import linspace
+import concurrent.futures
 
 
 def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,PropsSI):
@@ -194,6 +195,16 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
               'state_enthalpies': state_enthalpies,'CTE': CTEs, 'HeatSinkSource': HeatSinkSource, 'saturation_dome':saturation_dome}
     return output
 
+def compute_output(args):
+    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, pressure, condenser_out_temperature, PropsSI = args
+
+    output = SimpleBinary(
+        working_fluid, m_dot_geo_fluid, [reservoir[0], reservoir[1]],
+        superheat, pressure, condenser_out_temperature, PropsSI
+    )
+    net_work = output["Work_out"] - output["Work_in"]
+
+    return (j, i, temperature, pressure, net_work)
 
 def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature,data_points,PropsSI):
     interval = data_points
@@ -202,26 +213,27 @@ def simple_binary_parametric(working_fluid, m_dot_geo_fluid, reservoir, superhea
 
     interval = data_points
 
-    T_min = PropsSI('Tmin', 'WATER')
+    T_min = 273.16
     T_max = 0.8 * reservoir[0]
     P_min = PropsSI('pmin', working_fluid)
     P_max = 0.9 * PropsSI('pcrit', working_fluid)
 
-    T_range = np.linspace(T_min, T_max, interval)
-    P_range = np.linspace(P_min, P_max, interval)
+    T_range = np.linspace(T_min, T_max, interval) # Initialises a Numpy list of equally spaced values between the minimum and maximum point
+    P_range = np.linspace(P_min, P_max, interval) #
+    T_grid, P_grid = np.meshgrid(T_range, P_range, indexing='ij') #Takes two 1D arrays and makees a 2D array of the both of them
 
-    for i, temperature in enumerate(T_range):
-        for j, pressure in enumerate(P_range):
-            try:
-                output = SimpleBinary(
-                    working_fluid, m_dot_geo_fluid, [reservoir[0], temperature],
-                    superheat, pressure, condenser_out_temperature, PropsSI
-                )
-                net_work = output["Work_out"] - output["Work_in"]
-            except Exception as error:
-                net_work = 0  # Or np.nan if you prefer
-            # Yield indices and result for each parameter combination
-            yield (j, i, temperature, pressure, net_work)      
+
+    tasks = [(i, j, T_range[i], P_range[j], working_fluid, m_dot_geo_fluid, reservoir,
+        superheat, turbine_in_pressure, condenser_out_temperature, PropsSI) for i in range(interval) for j in range(interval)]
+
+    # Packs the values into a tuple that looks like this
+    # (index of pressure, index of temperature, temperature value, pressure value)
+
+
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        for result in executor.map(compute_output, tasks):
+            yield result
+
 
 # Example usage:
 # T_production = 165+273.15

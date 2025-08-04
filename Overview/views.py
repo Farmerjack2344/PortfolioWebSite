@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from sympy.physics.units import temperature
 from django.http import JsonResponse
 
 

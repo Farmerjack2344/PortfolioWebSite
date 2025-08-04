@@ -82,9 +82,9 @@ def plot_binary(request):
         'Heat_out': 0,
         'HeatSinkSource': [],
     }
-    para_work_out_array = np.array([])
-    T_range = np.array([])
-    P_range = np.array([])
+    para_work_out_array = []
+    T_range = []
+    P_range = []
     fluid_properties = []
     selected_fluids = []
     human_name = []
@@ -104,9 +104,9 @@ def plot_binary(request):
             condenser_outlet_temperature = form.cleaned_data['condenser_outlet_temperature']
             data_points = form.cleaned_data['data_points']
 
-            para_work_out_array = np.array([])
-            T_range = np.array([])
-            P_range = np.array([])
+            para_work_out_array = []
+            T_range = []
+            P_range = []
             HeatSinkSource = []
             
 
@@ -118,16 +118,33 @@ def plot_binary(request):
             except Exception as error:
                 form.add_error(None, error)
 
+
+
+
+
+
+
             try:
                 
                 for j, i, temperature, pressure, net_work in simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI):
                     # Process each result as it is generated
-                    para_work_out_array = np.append(para_work_out_array, net_work)
-                    T_range = np.append(T_range, temperature)
-                    P_range = np.append(P_range, pressure)
+                    para_work_out_array.append(net_work)
+                    T_range.append(temperature)
+                    P_range.append(pressure)
+
             except Exception as error:
                
                 form.add_error(None, error)
+
+
+
+
+
+
+
+
+
+
 
             try:
                 selected_fluids = request.POST.getlist('fluids')#This gets the CoolProp Input from the Checkbox
