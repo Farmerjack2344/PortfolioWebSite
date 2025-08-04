@@ -196,11 +196,11 @@ def SimpleBinary(working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_i
     return output
 
 def compute_output(args):
-    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, pressure, condenser_out_temperature, PropsSI = args
+    i, j, temperature, pressure, working_fluid, m_dot_geo_fluid, reservoir, superheat, turbine_in_pressure, condenser_out_temperature, PropsSI = args
 
     output = SimpleBinary(
         working_fluid, m_dot_geo_fluid, [reservoir[0], reservoir[1]],
-        superheat, pressure, condenser_out_temperature, PropsSI
+        superheat, pressure, temperature, PropsSI
     )
     net_work = output["Work_out"] - output["Work_in"]
 

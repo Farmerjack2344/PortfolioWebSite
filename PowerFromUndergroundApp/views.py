@@ -54,7 +54,7 @@ def plot_flash(request):
                         pressure_change=i, PropsSI=PropsSI, linspace=linspace
                     )
                     para_work_out_array.append(para_output["Work_out"] * -1)
-                    print(para_work_out_array)
+
             except Exception as error:
                 form.add_error(None, error)
 
@@ -80,7 +80,7 @@ def plot_binary(request):
         'Work_out': 0,  
         'Work_in': 0,   
         'Heat_out': 0,
-        'HeatSinkSource': [],
+        'HeatSinkSource': []
     }
     para_work_out_array = []
     T_range = []
@@ -128,6 +128,7 @@ def plot_binary(request):
                 
                 for j, i, temperature, pressure, net_work in simple_binary_parametric(working_fluid, m_geo_dot, [production_well_temperature, injection_well_temperature], superheat, turbine_inlet_pressure, condenser_outlet_temperature,data_points, PropsSI):
                     # Process each result as it is generated
+                    print(net_work)
                     para_work_out_array.append(net_work)
                     T_range.append(temperature)
                     P_range.append(pressure)
@@ -171,8 +172,8 @@ def plot_binary(request):
                                                                               'Entropies': json.dumps(output['state_entropies']), 'Temperatures': json.dumps(output['state_temperatures']),
                                                                               'saturation_dome': json.dumps(output['saturation_dome']),'Work_out': output['Work_out'], 'Work_in': output['Work_in'],
                                                                               'Heat_out': output['Heat_out'], 'HeatSinkSource': json.dumps(output['HeatSinkSource']),
-                                                                              'para_work_out_array': para_work_out_array.tolist(), 'T_range': T_range.tolist(),
-                                                                              'P_range': P_range.tolist(),'fluids': coolprop_fluids,'working_fluid_work_outputs': working_fluid_work_outputs,
+                                                                              'para_work_out_array': json.dumps(para_work_out_array), 'T_range': json.dumps(T_range),
+                                                                              'P_range': json.dumps(P_range),'fluids': coolprop_fluids,'working_fluid_work_outputs': working_fluid_work_outputs,
                                                                               'selected_fluids': selected_fluids
                                                                               })
 
