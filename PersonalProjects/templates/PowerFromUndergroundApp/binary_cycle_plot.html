@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet"  type="text/css" href="{% static 'PowerFromUndergroundApp/css/PlotStyle.css' %}">
+
+{% endblock %}
+
+
+{% block body_block %}
+    <div class="container">
+
+        <div class="jumbotron shadow">
+            <h2>Binary Cycle Inputs</h2>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<!-- The form here comes from the overview view for the flash plot. DOnt be confused-->
+                <h2>Select fluids to compare for the bar chart:</h2>
+                        <div class="fluid-list checkbox-grid">
+                            {% for fluid in fluids %}
+                                <label>
+                                    <input type="checkbox" name="fluids" value="{{ fluid.0 }}">{{ fluid.1 }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                <button type="submit">Run Simulation</button>
+                <button type="reset" style="Background: rgb(209, 122, 40);">Clear</button>
+            </form>
+            <br>
+            <p class="important_text">The working fluid for a Binary Cycle is a very important decider in its performance.
+            There are alot of fluids that are available in CoolProp. To help in the selection I made a table that helps 
+            in the comparison of the fluids.<br>You can find it here: <a href="{% url 'pfu:comparison_table' %}">Working Fluid Comparison</a>
+            <br>
+            <br>
+            <strong>Note: This may take a while to load depending on the number of data points.</strong>
+            </p>
+
+
+            <div class="PFUPlot container">
+
+                <div id="tsPlot"">
+                    <script>
+                        const Temperatures = {{ Temperatures | safe }}
+                        console.log(Temperatures)
+                        const Entropies = {{ Entropies | safe }}
+                        console.log(Entropies)
+                        const saturation_dome = {{ saturation_dome | safe }}
+                        const temperature_range =  saturation_dome[0] 
+                        const S_liq =  saturation_dome[1]
+                        const S_vap =  saturation_dome[2]
+                        
+
+                        const HeatSinkSource = {{ HeatSinkSource | safe }}
+                        const HeatSourceT =  [HeatSinkSource[1], HeatSinkSource[3]]
+                        const HeatSinkSourceS = [HeatSinkSource[0], HeatSinkSource[2]]
+
+
+                        const HeatSinkT =  [HeatSinkSource[5], HeatSinkSource[7]]
+
+                        const tsData = [{
+                            x: Entropies,
+                            y: Temperatures,
+                            mode: 'lines+markers+text',
+                            name: 'Cycle',
+                            marker: { color: 'green' },
+                            text: ['1', '2', '2s', '3', '4', '5', '6'],
+                            textposition: 'bottom right',
+                            
+                            },
+
+                            {x:HeatSinkSourceS,
+                            y: HeatSinkT,
+                            mode: 'markers+lines',
+                            name: 'Heat Sink',
+                            marker: { color: 'blue' }},
+
+                            {x:HeatSinkSourceS,
+                            y: HeatSourceT,
+                            mode: 'markers+lines',
+                            name: 'Heat Source',
+                            marker: { color: 'red' }},
+
+                            {
+                            x: S_liq,
+                            y: temperature_range,   
+                            mode: 'lines',
+                            name: 'Saturated Liquid',
+                            line: { color: 'blue', dash: 'dot' }
+                            },
+                            {
+                            x: S_vap,
+                            y: temperature_range,
+                            mode: 'lines',
+                            name: 'Saturated Vapor',
+                            line: { color: 'red', dash: 'dot' }
+                            },
+                            
+                            
+                            ]
+
+                        Plotly.newPlot('tsPlot', tsData, {
+                            title: 'T–s Diagram of Binary Cycle',
+                            xaxis: { title: 'Entropy (J/kg·K)' },
+                            yaxis: { title: 'Temperature (K)' },
+                            
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                        responsive: true,
+                        displayModeBar: true,
+                        useResizeHandler: true
+                        })
+                    </script>
+                </div>
+                
+            </div>
+            <p>This is the T-s Diagram of the Binary cycle based on the input that you have provided.
+                <ul>
+                    <li>1: Working Fluid at the turbine inlet</li>
+                    <li>2: Working Fluid at the turbine outlet and condenser inlet</li>
+                    <li>2s: Working Fluid at the end of isentropic expansion</li>
+                    <li>3: Working Fluid at the condenser outlet</li>
+                    <li>4: Working Fluid at the pump inlet</li>
+                    <li>5: Working Fluid at the pump outlet/ heat exchanger inlet</li>
+                    <li>6: Working Fluid in the heat exchanger becoming vapour</li>
+                    
+                </ul>
+                When all the point of the cycle are within the heat sink and source lines, the cycle is confirmed
+                to be a valid cycle. The cycle is valid if the working fluid is in the liquid phase at the pump inlet.
+                </p>
+
+            <div class="PFUPlot container">
+
+                <div id="phPlot">
+
+                    <script>    
+                        const Pressures = {{ Pressures | safe }}
+                        const Enthalpies = {{ Enthalpies | safe }}
+                        
+                        const pressure_range =  saturation_dome[3]
+                        const H_liq =  saturation_dome[4]
+                        const H_vap =  saturation_dome[5]
+                        
+                        const phData = [{
+                            x: Enthalpies,
+                            y: Pressures,
+                            mode: 'lines+markers+text',
+                            name: 'Cycle',
+                            marker: { color: 'green' },
+                            textposition: 'bottom right',
+                            text: ['1', '2', '2s', '3', '4', '5', '5s', '6'],
+                            textposition: 'bottom right'
+                            },
+                            {
+                            x: H_liq,
+                            y: pressure_range,
+                            mode: 'lines',
+                            name: 'Saturated Liquid',
+                            line: { color: 'blue', dash: 'dot' }
+                            },
+                                {
+                            x: H_vap,
+                            y:  pressure_range,
+                            mode: 'lines',
+                            name: 'Saturated Vapor',
+                            line: { color: 'red', dash: 'dot' }
+                            }
+                            
+                            ];
+
+                        Plotly.newPlot('phPlot', phData, {
+                            title: 'P-h Diagram of Binary Cycle',
+                            xaxis: { title: 'Enthalpy (J/kg)' },
+                            yaxis: { title: 'Pressure (Pa)' },
+                            
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                        responsive: true,
+                        displayModeBar: true,
+                        useResizeHandler: true
+                        })
+                    </script>
+                </div>
+                
+
+            </div>
+            <p>
+                This is the Pressure - enthalpy diagram of the Binary cycle based on the input that you have provided.
+                This diagram shows the same states shown in the T-s Daigarm except it is the pressure and enthalpy. This
+                plot is important because it shows another view of the cycle.
+                <br>
+                For example while developing the cycle and plotting I would set point 67 on the T-s Diagram to be a Saturated
+                vapour and then show the vapour heating to go to the inlewt of the turbine. This was an in accurate assumption.
+                I realised this when I saw the P-h diagram and saw that I had enough information to not make that assumtpion. Now 
+                the 6<sup>th</sup> point is shown accurately. This was important because using the previous assumption would
+                sometimes show that the cycle was not valid when it was. For example when using the Octane and Decane fluids.
+                <br>
+            </p>
+            <div class="PFUPlot container"> 
+
+                <div id="WorkContourPlot">
+
+                    <script>
+                        const para_work_out_array = {{ para_work_out_array | safe }}
+                        const T_range = {{ T_range | safe }}
+                        const P_range = {{ P_range | safe }}
+
+                        const workContourData = [{
+                            x: T_range,
+                            y: P_range,
+                            z: para_work_out_array,
+                            type: 'contour',
+                            colorscale: 'Viridis',
+                            colorbar: { title: 'Work Output (W)' },
+                            contours: {
+                                coloring: 'heatmap',
+                                showlabels: true,
+                                labelfont: {
+                                    family: 'Raleway',
+                                    size: 12,
+                                    color: 'white'
+                                }
+                            },
+                        }];
+
+                        Plotly.newPlot('WorkContourPlot', workContourData, {
+                            title: 'Work Output Vs. Injection Well Temperature and Turbine Inlet Pressure Contour Plot',
+                            xaxis: { title: 'Injection Well Temperature (K)' },
+                            yaxis: { title: 'Turbine Inlet Pressure (Pa)' },
+                            legend: { x: 1, y: 1 }
+                        },
+                        {
+                            responsive: true,
+                            autosize: true,
+                            displayModeBar: true,
+                            useResizeHandler: true
+                        })
+                    </script>
+                </div>
+                
+
+            </div>
+
+            <p>
+                    This plot shows how different combinations of turbine inlet pressure and injeciton well temperature 
+                    affect the work output of the cycle. The contour lines show the work output of the cycle. The color
+                    of the contour lines show the work output of the cycle. 
+
+                    <br>
+                    The highest outputs happen the larger the difference between the production well and the Injection well
+                    temperatures(When the injection well is at a lower temperature). 
+                </p>
+
+
+            
+            <div id="barPlot">
+                <script>
+                    const labels = {{ selected_fluids | safe }}
+                    const values = {{ working_fluid_work_outputs | safe }}
+
+                    // Create an array of colors based on value
+                    const barColors = values.map(value => {
+                        if (value == 1) { // ← Set your threshold here
+                            return 'rgba(245, 24, 17, 0.8)';  
+                        } else {
+                            return 'rgba(50, 171, 96, 1.0)';  
+                        }
+                    });
+
+                    const data = [{
+                                    x: labels,
+                                    y: values,
+                                    type: 'bar',
+                                    marker: {
+                                        color: barColors,
+                                        line: {
+                                            color: 'rgba(50, 171, 96, 1.0)',
+                                            width: 1.5
+                                        }
+                                    }
+                                }];
+
+                                const layout = {
+                                    title: 'Work Output by Working Fluid',
+                                    xaxis: {
+                                        title: 'Working Fluid'
+                                    },
+                                    yaxis: {
+                                        title: 'Work Output (Joules)',
+                                        zeroline: true
+                                    }
+                                };
+                    Plotly.newPlot('barPlot', data, layout);
+                </script>
+            </div>
+            <div>
+                <p><strong>If a bar has the value of 1 it means that the cycle was not valid for that fluid.</strong></p>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

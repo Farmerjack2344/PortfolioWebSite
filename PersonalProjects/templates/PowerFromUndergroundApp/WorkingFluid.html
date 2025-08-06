@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+{% block extra_css%}
+ <link rel="stylesheet"  type="text/css" href="{% static 'PowerFromUndergroundApp/css/PFUStyle.css' %}">
+{% endblock %}
+
+{% block body_block %}
+    <div class="container">
+        <div class="jumbotron shadow">
+            <h2>Working Fluid</h2>
+            <p>I made this section to create an easy way to compare the different fluids that are available in CoolProp.
+                I have used the <a href="http://www.coolprop.org/fluid_properties/PurePseudoPure.html#list-of-fluids">CoolProp</a> library to get the properties of the fluids.
+                The fluids are then plotted on a T-s diagram to show the differences in the fluids.
+                <br>
+                <br>
+                Here you will find a list of fluids and can tick them and the fluids that you select will appear in a generated table.
+            </p>
+            
+            
+
+            <form method="POST">
+                {% csrf_token %}
+                <h2>Select the fluids you want to compare:</h2>
+                <div class="fluid-list checkbox-grid">
+                    {% for fluid in fluids %}
+                        
+                            <label>
+                                <input type="checkbox" name="fluids" value="{{ fluid.0}}">{{ fluid.1 }}
+                            </label>
+                        
+                    {% endfor %}
+                </div>
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+            </form>
+            
+            
+
+            <p><strong>Note:</strong> The values for when the Temperature is 300K and the pressure is 1 MPa</p>
+            {% if selected_fluids %}
+                
+                <table class="table table-bordered">
+                <thead>
+                    <tr>
+                    <th>Fluid Name</th>
+                    <th>Latent Heat of Vapourisation(kJ/kg)</th>
+                    <th>Specific Heat Capacity (kJ/kg . K)</th>
+                    <th>Density(Liquid) (kg/m³)</th>
+                    <th>Density(Gas) (kg/m³)</th>
+                    <th>Evaporation Temperature (K)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for property in fluid_properties %}
+                    <tr>
+                        
+                        <td>{{ property.0 }}</td>
+                        <td>{{ property.1 }}</td>
+                        <td>{{ property.2 }}</td>
+                        <td>{{ property.3 }}</td>
+                        <td>{{ property.4 }}</td>
+                        <td>{{ property.5 }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock %}

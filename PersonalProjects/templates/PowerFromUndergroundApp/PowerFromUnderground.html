@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+{% block body_block %}
+
+    <!--div class="container"-->
+        <div class="jumbotron shadow" style="margin-top: 20px; background-color: #dfe6eb;">
+            <section class="mb-10">
+            <h2 class="text-3xl font-semibold text-blue-800">Project Overview</h2>
+            <p>
+              This project investigates the suitability of geothermal energy for electricity generation in the UK,
+              specifically evaluating the geothermal reservoir in Cornwall. Three different power cycles were
+              modelled: a single flash cycle, a binary organic Rankine cycle (ORC), and a hybrid flash-binary cycle.
+              The models were developed in MATLAB and validated using case studies from real geothermal plants.
+            </p>
+            <p class="mt-2">
+              The goal was to determine which cycle performs best in terms of energy output and thermal efficiency,
+              using CoolProp to source accurate thermodynamic properties of various working fluids and MATLAB to plot the Results of the calculations.
+            </p>
+          </section>
+
+          <!-- Suggested Image: Schematic diagram of all three cycles -->
+          <!-- IMAGE: "CycleComparison.png" with caption: "Cycle configurations: Flash, Binary, and Hybrid Flash-Binary." -->
+
+          <section class="mb-10">
+            <h2 class="text-3xl font-semibold text-blue-800">Objectives</h2>
+            <ul class="list-disc list-inside">
+              <li>Model three geothermal power cycles: Flash, Binary, and Hybrid</li>
+              <li>Validate models using global case studies (Cerro Prieto, Miravalles)</li>
+              <li>Conduct a case study on the United Downs Deep Geothermal Project (UDDGP)</li>
+              <li>Identify the optimal working fluid and operating conditions for efficiency</li>
+            </ul>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="text-3xl font-semibold text-blue-800">Thermodynamic Background</h2>
+            <p>
+              Each cycle is a variation of the Rankine cycle, which includes processes like isentropic expansion
+              in turbines and isobaric heat exchange. The binary cycle uses organic working fluids like n-pentane
+              or R245fa, which allow operation at lower geothermal temperatures.
+            </p>
+            <!-- IMAGE: "RankineDiagram.png" -->
+            <!-- Suggested Image: Temperature-Entropy (T-s) and Pressure-Enthalpy (P-h) diagrams for the Rankine cycle -->
+
+            <p class="mt-4">
+              In the hybrid cycle, exhaust steam from the flash turbine is used to preheat the binary cycle fluid
+              through a recuperator, improving overall efficiency. This method allows greater energy extraction
+              from the geofluid before re-injection.
+            </p>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="text-3xl font-semibold text-blue-800">Case Study: Cornwall, UK</h2>
+            <p>
+              Cornwall has elevated geothermal gradients due to heat-producing granites. The UDDGP in Redruth
+              targets reservoir temperatures of 150–200°C at depths of 5–7 km. Models were built around technical
+              parameters of this site, including a geofluid temperature of 175°C at the production well.
+            </p>
+
+            <p class="mt-4">
+              The working fluid R218 was initially considered due to local plans, but n-pentane and cyclopentane
+              outperformed it in terms of both work output and thermal efficiency.
+            </p>
+          </section>
+        </div>
+    <!--/div-->
+
+
+
+          <section class="mb-10 container" style="margin-top: 25px;">
+            
+              <div class=" jumbotron shadow PFUCycleInfo">
+                  <h3 class="text-2xl font-medium mt-4">Flash Cycle</h3>
+                  <figure>
+                      <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/FlashCycleConfiguration.png' %}" width="600" height="600">
+                      <figcaption class="text-sm text-gray-600 mt-2">Schematic for the flash Cycle used</figcaption>
+                  </figure>
+                  <p>
+                    Produced a peak of ~350 kW at a pressure drop of 32%. However, it required high geofluid
+                    temperatures and flow rates, making it unsuitable for Cornwall's relatively moderate conditions.
+                  </p>
+
+                  <p>You can find my flash model here:<a href="{% url  'pfu:plot_flash'%}">Flash Cycle Simulation</a></p>and run a simulation.
+                
+              </div>
+          </section>
+
+          <section class="mb-10 container" style="margin-top: 20px;">
+              <div class="jumbotron PFUCycleInfo shadow">
+                    <h3 class="text-2xl font-medium mt-4">Binary Cycle</h3>
+                      <figure>
+                        <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/BinaryCycleConfiguration.png' %}" width="600" height="600">
+                        <figcaption class="text-sm text-gray-600 mt-2">Schematic for the Binary Cycle used</figcaption>
+                      </figure>
+                    <p>
+                      Reached 1.8–2 MW using R218, with the best performance at low injection well temperatures and
+                      high turbine inlet pressures. n-pentane and cyclopentane provided even better efficiency.
+                    </p>
+
+                    <figure>
+                        <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/BinaryBarchart.png' %}" width="1000" height="600">
+                        <figcaption class="text-sm text-gray-600 mt-2">Bar chart of work output vs working fluid</figcaption>
+                    </figure>
+                    <figure>
+                        <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/BinaryContour.png' %}" width="1000" height="600">
+                        <figcaption class="text-sm text-gray-600 mt-2">This is a contour plot showing how the work done is affected  by the temperature of the geofluid and the injection wellhead vs the turbine inlet pressure</figcaption>
+                    </figure>
+                    <!-- Suggested Image: Bar chart of work output vs working fluid, or contour plot of pressure vs temperature -->
+                    <p>As with the Flash Cycle, you can find my Binary Model and run simulations <a href="{% url  'pfu:plot_binary'%}">here</a>.</p>
+
+              </div>
+          </section>
+
+
+
+
+
+          <section class="mb-10 container" style="margin-top: 20px;">
+              <div class="PFUCycleInfo jumbotron shadow" style="margin-top: 20px;">
+                    <h3 class="text-2xl font-medium mt-4">Hybrid Flash BinaryCycle</h3>
+
+
+                      <figure class="w-full max-w-full overflow-x-auto">
+                          <img class="figure img-fluid w-full h-auto object-contain" src="{% static 'PowerFromUndergroundApp/images/HybridFlashBinaryCycle.png' %}" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Schematic for the Hybrid Cycle used
+                          </figcaption>
+                      </figure>
+                    <p>
+                      Combined both cycles for a peak output of 2.07 MW and thermal efficiency of ~14%. While
+                      complexity increases, it offered the most sustainable long-term performance due to enhanced
+                      heat recovery.
+                    </p>
+
+                    <figure>
+                          <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/HybridDiagram.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Results of the simulation
+                          </figcaption>
+                      </figure>
+                    <figure>
+                          <img class="figure img-fluid" src="{% static 'PowerFromUndergroundApp/images/HybridParametrics.png' %}" width="1000" height="600" alt="Hybrid Flash-Binary Cycle Configuration">
+                          <figcaption class="text-sm text-gray-600 mt-2">
+                            Results of the simulation Parametric study
+                          </figcaption>
+                      </figure>
+                    <!-- Suggested Image: Overlaid T-s diagrams showing hybrid cycle thermodynamic path -->
+              </div>
+          </section>
+
+
+          <div class="jumbotron" style="margin-top: 20px;background-color: #dfe6eb;">
+              <!--div class="jumbotron"-->
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Key Insights:</h2>
+                  <p>
+                    Higher efficiency is critical for sustainability — hybrid cycles allow better long-term resource
+                    use, delaying temperature drawdown in Enhanced Geothermal Systems (EGS) like Cornwall's.
+                  </p>
+                </section>
+
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Tools and Technologies</h2>
+                  <ul class="list-disc list-inside">
+                    <li>MATLAB for model development and data visualization</li>
+                    <li>CoolProp for accurate fluid property calculations</li>
+                    <li>Parametric studies with contour and bar plots</li>
+                    <li>Validation with international case studies (Mexico and Costa Rica)</li>
+                  </ul>
+                </section>
+
+                <section class="mb-10">
+                  <h2 class="text-3xl font-semibold text-blue-800">Conclusion</h2>
+                  <p>
+                    The hybrid flash-binary cycle is the most suitable configuration for geothermal power generation
+                    in the UK based on performance, efficiency, and adaptability. While more complex, its greater energy
+                    output and efficient heat recovery make it a better long-term investment, especially in Enhanced
+                    Geothermal Systems like UDDGP.
+                  </p>
+                  <p class="mt-2">
+                    Future improvements could include the use of optimization algorithms and development of a user
+                    interface for broader usability by engineers and researchers.
+                  </p>
+                </section>
+              <!--/div-->
+          </div>
+        </div>
+
+{% endblock %}
