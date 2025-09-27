@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Core JavaScript helper functions
 'use strict';
 
@@ -182,3 +183,5 @@ function findPosY(obj) {
         return new Date(Date.UTC(year, month, day));
     };
 }
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use strict';
 {
     const initData = JSON.parse(document.getElementById('django-admin-popup-response-constants').dataset.popupResponse);
@@ -13,3 +14,5 @@
         break;
     }
 }
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

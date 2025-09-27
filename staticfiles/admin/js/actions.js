@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*global gettext, interpolate, ngettext, Actions*/
 'use strict';
 {
@@ -202,3 +203,5 @@
         }
     });
 }
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * jQuery JavaScript Library v3.7.1
  * https://jquery.com/
@@ -10714,3 +10715,5 @@ if ( typeof noGlobal === "undefined" ) {
 
 return jQuery;
 } );
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

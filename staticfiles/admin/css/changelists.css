@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* CHANGELISTS */
 
 #changelist {
@@ -341,3 +342,5 @@
 #changelist .actions .button:focus, #changelist .actions .button:hover {
     border-color: var(--body-quiet-color);
 }
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

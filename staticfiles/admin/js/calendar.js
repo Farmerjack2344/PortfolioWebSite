@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*global gettext, pgettext, get_format, quickElement, removeChildren*/
 /*
 calendar.js - Calendar functions by Adrian Holovaty
@@ -237,3 +238,5 @@ depends on core.js for utility functions like removeChildren or quickElement
     window.Calendar = Calendar;
     window.CalendarNamespace = CalendarNamespace;
 }
+=======
+>>>>>>> 83a5a0463267404cd091a34ab22f62677521b624

@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path
 from Overview import views as OverviewViews
 from Blog import views as BlogViews
-from PowerFromUndergroundApp import views as PowerFromUndergroundViews
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
@@ -28,8 +27,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include('Overview.urls')),
-    path('powerfromunderground/', include('PowerFromUndergroundApp.urls')),
     path('blog/', include('Blog.urls')),
+    path('/PowerFromUnderground', include('PowerFromUndergroundApp.urls')),
     path('accounts/login/',BlogViews.login_as_view, name='login'),
     path('accounts/logout/', BlogViews.logout_as_view, name='logout'),
     path('admin/', admin.site.urls),
