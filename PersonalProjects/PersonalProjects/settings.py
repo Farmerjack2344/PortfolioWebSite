@@ -34,7 +34,7 @@ STATIC_DIR = (BASE_DIR.joinpath('static'))# This directory will hold static file
 SECRET_KEY = 'django-insecure-=w9f)m5j0rm23ldo1j!_uel9p_i3si-5s55w)@6k4b9i8o@7p4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['nathanieljohnson2344.pythonanywhere.com']
 
