@@ -197,7 +197,7 @@ def comparison_table(request):
 
                 if (alias.upper() in selected_fluids): #This finds the alias in the selected fluids
                     human_name.append(human)
-                    print(human)
+
             
             
             for fluid in property_generator(selected_fluids, PropsSI):

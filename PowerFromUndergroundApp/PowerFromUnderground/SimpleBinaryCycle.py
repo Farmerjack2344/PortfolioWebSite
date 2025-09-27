@@ -205,7 +205,7 @@ def compute_output(args):
         )
         net_work = output["Work_out"] - output["Work_in"]
 
-        print(net_work)
+
         return (i, j, temperature, pressure, net_work)
     except:
         return (i, j, temperature, pressure, 0)
