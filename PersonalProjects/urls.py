@@ -28,7 +28,7 @@ from django.conf import settings
 urlpatterns = [
     path('', include('Overview.urls')),
     path('blog/', include('Blog.urls')),
-    path('/PowerFromUnderground', include('PowerFromUndergroundApp.urls')),
+    path('PowerFromUnderground/', include('PowerFromUndergroundApp.urls')),
     path('accounts/login/',BlogViews.login_as_view, name='login'),
     path('accounts/logout/', BlogViews.logout_as_view, name='logout'),
     path('admin/', admin.site.urls),
