@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-=w9f)m5j0rm23ldo1j!_uel9p_i3si-5s55w)@6k4b9i8o@7p4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','nathanieljohnson2344.pythonanywhere.com']
+ALLOWED_HOSTS = ['nathanieljohnson2344.pythonanywhere.com']
 
 
 # Application definition
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Overview',
     'Blog',
-    'PowerFromUndergroundApp'
 ]
 
 MIDDLEWARE = [
@@ -133,11 +132,10 @@ MEDIA_URL = '/media/'  # URL to access media files
 MEDIA_ROOT = BASE_DIR.joinpath('Blog/media')#os.path.join(BASE_DIR, 'media')
 # Directory to store uploaded files
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT =  BASE_DIR.joinpath('staticfiles')
 STATICFILES_DIRS = [BASE_DIR.joinpath('Overview/static'),
-                    BASE_DIR.joinpath('Blog/static'),
-                    BASE_DIR.joinpath('PowerFromUndergroundApp/static'),]
+                    BASE_DIR.joinpath('Blog/static')]
 
 
 
