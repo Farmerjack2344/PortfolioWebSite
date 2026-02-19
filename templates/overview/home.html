@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% extends "base.html"%}
+{% load static %}
+
+
+
+{% block body_block %}
+
+<div class="container" >
+    <div class="jumbotron shadow">
+        <div class="row">
+            <div class="col-md-8 welcome-txt">
+                <h1 class="display-4">Nathaniel Johnson</h1>
+                <p class="lead">
+
+                <b>Mechanical Engineering MSc | Robotics & Sustainable Energy</b>.<br>
+                <br>
+
+
+                <br>
+                My interests lie at the intersection of mechanical engineering and partially software development.
+                Through both my coursework and personal projects, I’ve explored electronics and robotics—working with Arduino
+                and programming microcontrollers as part of embedded systems modules. I've also had hands-on experience
+                using the Elisa Robot platform, which deepened my understanding of hardware applications and sensor integration.
+                <br>
+                <br>
+                I aspire to become a mechanical design engineer in the energy sector, with a focus on power plant design and system modelling.
+                However, I am excited to contribute in any way I can.
+                I’m particularly interested in the utilities industry and how we can create efficient, innovative solutions for energy generation.
+                <br>
+
+                As part of my <a href="{% url 'pfu:powerfromunderground' %}">final year</a> project, I designed and modelled a power cycle for a geothermal power plant based in the UK.
+                I used MATLAB to simulate different power cycles and conducted a comparative analysis to identify the most efficient option.
+                This project has solidified my enthusiasm for thermodynamics, modelling, and sustainable engineering design.
+
+
+                <br>
+                <br>
+                    The entirety of my portfolio can be found here: <a href="{% url 'overview:portfolio' %}">Portfolio</a>
+                </p>
+
+                <h2 class="display-6">Key Skills</h2>
+                <p class="lead">In this paragraph I would like to highlight some of the skills that I have picked up in the <br>
+                    pursuit of being a Mechanical Engineer with Robotics:<br>
+                    <ul>
+                        <li><b>Python</b> to a high level of understanding, which I consider to mean understanding to use<br>
+                            python code in a procedural, object-oriented and functional manner</li>
+                        <br>
+
+
+
+                        <li><b>C/C++</b> I learnt this so that I could more effectively programme an Arduino and because<br>
+                            it is a very industry standard programming language.</li>
+                        <br>
+
+                        <li><b>MATLAB</b> and Simulink</li>
+                        <br>
+
+                        <li><b>SolidWorks</b></li>
+                        <br>
+
+                        <li><b>Mechanical design and Simulation</b></li>
+                        <br>
+
+                        <li><b>Advanced Mathematics</b></li>
+                        <br>
+
+                        <li><b>Curiosity and research</b></li>
+                        <br>
+
+                        <li><b>Information Technology</b> namely network virtualization and penetration</li>
+
+                    </ul>
+                    I decided to learn each of these skills as I believe to be a good engineer you need to continually learn as <br>
+                    more technology comes out.
+
+
+
+
+
+                <div class="col-md-4 skillpic">
+                    <img width="600" class="img-fluid" src="{% static 'overview/images/SkillChart.png' %}">
+                    <caption><em>This is an automatically generated picture.<br>
+                             Depicting all the skills I have acquired</em></caption>
+                </div>
+
+
+                <br>
+                <br>
+
+                <H6><b>Contact Information</b></H6>
+                <p>
+                    Email: <a href="mailto:nathanieljohnson881@gmail.com">nathanieljohnson881@gmail.com</a>
+
+                    <br>
+                    <br>
+                    <a class="nav-link active" aria-current="page" href="https://www.linkedin.com/in/nathaniel-johnson-798538195/" target="_blank" rel="noopener noreferrer">LinkedIn: https://www.linkedin.com/in/nathaniel-johnson-798538195/</a>
+                </p>
+
+
+
+            </div>
+
+            <div class="col-md-4 profile">
+                <a id="logo"  href="https://www.linkedin.com/in/nathaniel-johnson-798538195/" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static 'overview/images/selfie3.jpg' %}" class="img-fluid">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
