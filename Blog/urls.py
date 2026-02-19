@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from overview import views
+from Overview import views
 from django.conf.urls import include
-from blog import views
+from Blog import views
 from PersonalProjects import settings
 from django.conf.urls.static import static
 

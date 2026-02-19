@@ -5,8 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy,reverse
 from django.views.generic import TemplateView,ListView, DetailView, CreateView, UpdateView,DeleteView
-from blog.models import Post,  Comments
-from blog.forms import PostForm,CommentForm
+from Blog.models import Post,  Comments
+from Blog.forms import PostForm,CommentForm
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages#
