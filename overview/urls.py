@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
-from Overview import views
+from overview import views
 
 app_name = 'overview'
 
